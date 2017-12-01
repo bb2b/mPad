@@ -18,8 +18,13 @@ int main(int argc, char *argv[])
     g_switchboard = new SwitchBoard;
     g_switchboard->show();
     g_whiteboard = new WhiteBoard;
+    g_whiteboard->show();
     g_mainwindow = new MainWindow;
-    g_mainwindow->show();
+    g_mainwindow->showFullScreen();
+
+    set_window_top_hint(g_notebar, HWND_TOPMOST, true);
+    set_window_top_hint(g_panel, HWND_TOPMOST, true);
+    set_window_top_hint(g_switchboard, HWND_TOPMOST, true);
 
     return a.exec();
 }

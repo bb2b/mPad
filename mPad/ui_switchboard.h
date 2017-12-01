@@ -14,6 +14,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -21,12 +23,23 @@ QT_BEGIN_NAMESPACE
 class Ui_SwitchBoard
 {
 public:
+    QVBoxLayout *verticalLayout;
+    QPushButton *pushButton;
 
     void setupUi(QWidget *SwitchBoard)
     {
         if (SwitchBoard->objectName().isEmpty())
             SwitchBoard->setObjectName(QStringLiteral("SwitchBoard"));
-        SwitchBoard->resize(400, 300);
+        SwitchBoard->resize(75, 23);
+        verticalLayout = new QVBoxLayout(SwitchBoard);
+        verticalLayout->setSpacing(0);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        pushButton = new QPushButton(SwitchBoard);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+
+        verticalLayout->addWidget(pushButton);
+
 
         retranslateUi(SwitchBoard);
 
@@ -36,6 +49,7 @@ public:
     void retranslateUi(QWidget *SwitchBoard)
     {
         SwitchBoard->setWindowTitle(QApplication::translate("SwitchBoard", "Form", 0));
+        pushButton->setText(QApplication::translate("SwitchBoard", "\344\270\213\346\213\211", 0));
     } // retranslateUi
 
 };

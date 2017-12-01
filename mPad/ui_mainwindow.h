@@ -27,6 +27,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(400, 300);
+        MainWindow->setStyleSheet(QStringLiteral("background-color: rgb(255, 170, 127);"));
 
         retranslateUi(MainWindow);
 

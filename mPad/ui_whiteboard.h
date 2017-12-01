@@ -27,6 +27,7 @@ public:
         if (WhiteBoard->objectName().isEmpty())
             WhiteBoard->setObjectName(QStringLiteral("WhiteBoard"));
         WhiteBoard->resize(400, 300);
+        WhiteBoard->setStyleSheet(QStringLiteral("background-color: rgb(0, 170, 127);"));
 
         retranslateUi(WhiteBoard);
 
