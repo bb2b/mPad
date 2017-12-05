@@ -18,14 +18,16 @@ SOURCES += main.cpp\
     notebar.cpp \
     whiteboard.cpp \
     switchboard.cpp \
-    global.cpp
+    global.cpp \
+    xwidget.cpp
 
 HEADERS  += mainwindow.h \
     panel.h \
     notebar.h \
     whiteboard.h \
     switchboard.h \
-    global.h
+    global.h \
+    xwidget.h
 
 FORMS    += mainwindow.ui \
     panel.ui \

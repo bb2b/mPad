@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(0, 170, 127);</string>
+   <string notr="true">background:transparent;</string>
   </property>
  </widget>
  <resources/>

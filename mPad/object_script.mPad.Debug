@@ -6,9 +6,11 @@ INPUT(
 ./debug\whiteboard.o
 ./debug\switchboard.o
 ./debug\global.o
+./debug\xwidget.o
 ./debug\moc_mainwindow.o
 ./debug\moc_panel.o
 ./debug\moc_notebar.o
 ./debug\moc_whiteboard.o
 ./debug\moc_switchboard.o
+./debug\moc_xwidget.o
 );

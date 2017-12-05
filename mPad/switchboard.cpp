@@ -22,6 +22,9 @@ SwitchBoard::~SwitchBoard()
 void SwitchBoard::on_pushButton_clicked()
 {
     set_window_top_hint(g_whiteboard, HWND_TOP, true);
+    if(b_move_direction)
+        g_whiteboard->move(0, -g_whiteboard->height());
+    g_whiteboard->prepare(false);
     if(!move_timer.isActive())
         move_timer.start(1);
 }
@@ -40,6 +43,8 @@ void SwitchBoard::on_move_timer_out()
         {
             b_move_direction = false;
             move_timer.stop();
+            g_notebar->on_painttoolbar(false);
+            g_panel->hide();
             return;
         }
     }
@@ -55,6 +60,8 @@ void SwitchBoard::on_move_timer_out()
         {
             b_move_direction = true;
             move_timer.stop();
+            g_notebar->on_painttoolbar(true);
+            g_panel->show();
             return;
         }
     }

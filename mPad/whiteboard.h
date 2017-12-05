@@ -2,6 +2,10 @@
 #define WHITEBOARD_H
 
 #include <QWidget>
+#include <QImage>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QColor>
 
 namespace Ui {
 class WhiteBoard;
@@ -15,8 +19,15 @@ public:
     explicit WhiteBoard(QWidget *parent = 0);
     ~WhiteBoard();
 
+    void prepare(bool istransparent);
+
+protected:
+    void paintEvent(QPaintEvent *event);
+
 private:
     Ui::WhiteBoard *ui;
+    QImage m_image;
+    QImage *m_current_image;
 };
 
 #endif // WHITEBOARD_H

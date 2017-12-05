@@ -6,9 +6,11 @@ INPUT(
 ./release\whiteboard.o
 ./release\switchboard.o
 ./release\global.o
+./release\xwidget.o
 ./release\moc_mainwindow.o
 ./release\moc_panel.o
 ./release\moc_notebar.o
 ./release\moc_whiteboard.o
 ./release\moc_switchboard.o
+./release\moc_xwidget.o
 );

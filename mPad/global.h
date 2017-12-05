@@ -2,6 +2,7 @@
 #define GLOBAL
 
 #include <windows.h>
+#include <QTextCodec>
 #include "notebar.h"
 #include "panel.h"
 #include "switchboard.h"

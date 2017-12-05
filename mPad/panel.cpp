@@ -37,8 +37,16 @@ void Panel::mouseReleaseEvent(QMouseEvent *event)
     if(m_absolute_point == event->globalPos())
     {
         if(g_mainwindow->isMinimized())
+        {
             g_mainwindow->showFullScreen();
+            set_window_top_hint(g_whiteboard, HWND_TOP, true);
+        }
         else
+        {
             g_mainwindow->showMinimized();
+            g_whiteboard->move(0, -g_whiteboard->height());
+            set_window_top_hint(g_whiteboard, HWND_BOTTOM, false);
+            g_notebar->on_painttoolbar(true);
+        }
     }
 }
