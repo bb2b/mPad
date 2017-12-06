@@ -8,6 +8,7 @@ WhiteBoard *g_whiteboard = NULL;
 MainWindow *g_mainwindow = NULL;
 int g_draw_width = 2;
 QColor g_draw_color = QColor(255,0,0);
+int g_draw_type = DRAW;
 
 int main(int argc, char *argv[])
 {

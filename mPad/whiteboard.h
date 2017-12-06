@@ -1,15 +1,15 @@
 #ifndef WHITEBOARD_H
 #define WHITEBOARD_H
 
-#include <QWidget>
+#include <QLabel>
 #include <QImage>
 #include <QPen>
 #include <QBrush>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QMouseEvent>
-#include <QColor>
 #include <QPoint>
+#include <QVector>
 
 class WhiteBoard : public QLabel
 {
@@ -22,6 +22,7 @@ public:
     void prepare(bool istransparent);
     void paint();
     void fullclear();
+    void localclear();
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -30,13 +31,14 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event);
 
 private:
-    Ui::WhiteBoard *ui;
     QImage m_image;
+    QImage m_image_temp;
     QImage *m_current_image;
     QPoint m_start_point;
     QPoint m_end_point;
     QPoint m_move_start_point;
     bool m_pressed;
+    QVector<QPoint> points;
 };
 
 #endif // WHITEBOARD_H

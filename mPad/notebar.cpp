@@ -270,6 +270,8 @@ void PaintToolBar::on_color_clear()
 
 void PaintToolBar::on_point_set()
 {
+    g_draw_type = DRAW;
+
     if(g_draw_width == 1)
         x_sPoint->setStyleSheet("border:3px solid rgb(0,0,0);");
     else if(g_draw_width == 2)
@@ -280,6 +282,11 @@ void PaintToolBar::on_point_set()
 
 void PaintToolBar::on_color_set()
 {
+    g_draw_type = DRAW;
+
+    if(g_draw_color == QColor(0,0,0,0))
+        g_draw_color = QColor(255,0,0);
+
     if(g_draw_color == QColor(255,0,0))
         x_red->setStyleSheet("border:3px solid rgb(0,0,0);background-color:rgb(255,0,0);");
     else if(g_draw_color == QColor(0,0,255))
@@ -343,6 +350,9 @@ void PaintToolBar::on_localclear_clicked()
     x_brush->setStyleSheet("border:none;");
     on_point_clear();
     on_color_clear();
+
+    g_whiteboard->localclear();
+    g_draw_type = ERASE;
 }
 
 void PaintToolBar::on_revocation_clicked()
