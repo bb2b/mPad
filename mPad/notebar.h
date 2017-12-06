@@ -46,6 +46,11 @@ public:
     PaintToolBar();
     ~PaintToolBar();
 
+    void on_point_clear();
+    void on_color_clear();
+    void on_point_set();
+    void on_color_set();
+
 public slots:
     void on_roaming_clicked();
     void on_select_clicked();

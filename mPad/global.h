@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <QTextCodec>
+#include <QColor>
 #include "notebar.h"
 #include "panel.h"
 #include "switchboard.h"
@@ -10,7 +11,8 @@
 #include "mainwindow.h"
 
 // 是否打印调试信息
-#define SUPPORT_DBG        1
+#define SUPPORT_DBG         1
+#define NULL_POINT          QPoint(10000, 10000)
 
 // 打印调试日志
 static inline void WriteLog(const char* format, ...)
@@ -36,6 +38,8 @@ extern Panel *g_panel;
 extern SwitchBoard *g_switchboard;
 extern WhiteBoard *g_whiteboard;
 extern MainWindow *g_mainwindow;
+extern int g_draw_width;
+extern QColor g_draw_color;
 
 extern void set_window_top_hint(QWidget *widget, HWND hWndlnsertAfter, bool active);
 extern void set_window_foreground(QWidget *widget);

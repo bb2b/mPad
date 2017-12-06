@@ -32,5 +32,4 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     panel.ui \
     notebar.ui \
-    whiteboard.ui \
-    switchboard.ui
+    whiteboard.ui
