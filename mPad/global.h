@@ -15,6 +15,8 @@
 #define NULL_POINT          QPoint(10000, 10000)
 #define DRAW                1
 #define ERASE               2
+#define ROAMING             3
+#define SELECT              4
 
 // 打印调试日志
 static inline void WriteLog(const char* format, ...)

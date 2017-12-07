@@ -315,6 +315,8 @@ void PaintToolBar::on_roaming_clicked()
     x_brush->setStyleSheet("border:none;");
     on_point_clear();
     on_color_clear();
+
+    g_draw_type = ROAMING;
 }
 
 void PaintToolBar::on_select_clicked()
@@ -325,6 +327,8 @@ void PaintToolBar::on_select_clicked()
     x_brush->setStyleSheet("border:none;");
     on_point_clear();
     on_color_clear();
+
+    g_draw_type = SELECT;
 }
 
 void PaintToolBar::on_fullsave_clicked()
@@ -351,13 +355,13 @@ void PaintToolBar::on_localclear_clicked()
     on_point_clear();
     on_color_clear();
 
-    g_whiteboard->localclear();
+    //g_whiteboard->localclear();
     g_draw_type = ERASE;
 }
 
 void PaintToolBar::on_revocation_clicked()
 {
-
+    g_whiteboard->revocation();
 }
 
 void PaintToolBar::on_brush_clicked()

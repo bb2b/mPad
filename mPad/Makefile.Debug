@@ -472,7 +472,9 @@ debug/moc_notebar.cpp: C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QWidget \
 		notebar.h
 	C:\Qt\Qt5.4.2\5.4\mingw491_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/Qt5.4.2/5.4/mingw491_32/mkspecs/win32-g++ -IG:/mPad/trunk/mPad -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore notebar.h -o debug\moc_notebar.cpp
 
-debug/moc_whiteboard.cpp: C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QWidget \
+debug/moc_whiteboard.cpp: C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QLabel \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qlabel.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qframe.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qwidget.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qwindowdefs.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/qglobal.h \
@@ -583,8 +585,8 @@ debug/moc_whiteboard.cpp: C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QWidge
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QMouseEvent \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QColor \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QPoint \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		whiteboard.h
 	C:\Qt\Qt5.4.2\5.4\mingw491_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/Qt5.4.2/5.4/mingw491_32/mkspecs/win32-g++ -IG:/mPad/trunk/mPad -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui -IC:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore whiteboard.h -o debug\moc_whiteboard.cpp
 
@@ -970,6 +972,7 @@ debug/main.o: main.cpp global.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		mainwindow.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QApplication \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qapplication.h \
@@ -1286,6 +1289,7 @@ debug/panel.o: panel.cpp panel.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\panel.o panel.cpp
 
@@ -1457,11 +1461,14 @@ debug/notebar.o: notebar.cpp notebar.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\notebar.o notebar.cpp
 
 debug/whiteboard.o: whiteboard.cpp whiteboard.h \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QWidget \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QLabel \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qlabel.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qframe.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qwidget.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qwindowdefs.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/qglobal.h \
@@ -1572,15 +1579,14 @@ debug/whiteboard.o: whiteboard.cpp whiteboard.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QMouseEvent \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QColor \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QPoint \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		global.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QTextCodec \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/qtextcodec.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QColor \
 		notebar.h \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QLabel \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qlabel.h \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qframe.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QWidget \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QVBoxLayout \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qboxlayout.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qlayout.h \
@@ -1607,7 +1613,15 @@ debug/whiteboard.o: whiteboard.cpp whiteboard.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QSizeF \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QTransform \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QDesktopWidget \
-		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qdesktopwidget.h
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qdesktopwidget.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/QApplication \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtWidgets/qapplication.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/qcoreapplication.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/qeventloop.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qguiapplication.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qinputmethod.h \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPolygonF \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPainterPath
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\whiteboard.o whiteboard.cpp
 
 debug/switchboard.o: switchboard.cpp switchboard.h \
@@ -1781,6 +1795,7 @@ debug/switchboard.o: switchboard.cpp switchboard.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\switchboard.o switchboard.cpp
 
@@ -1920,6 +1935,7 @@ debug/global.o: global.cpp global.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qpainter.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/qtextoption.h \
 		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtGui/QPaintEvent \
+		C:/Qt/Qt5.4.2/5.4/mingw491_32/include/QtCore/QVector \
 		mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\global.o global.cpp
 
