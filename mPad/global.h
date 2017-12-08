@@ -19,11 +19,12 @@
 
 // 是否打印调试信息
 #define SUPPORT_DBG         1
-#define NULL_POINT          QPoint(10000, 10000)
 #define DRAW                1
 #define ERASE               2
 #define ROAMING             3
 #define SELECT              4
+#define SELECT_COLOR        QColor(255, 201, 14)
+#define LOCALCLEAR_COLOR    QColor(34, 177, 76)
 
 // 打印调试日志
 static inline void WriteLog(const char* format, ...)

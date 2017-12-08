@@ -37,20 +37,17 @@ void WhiteBoard::prepare(bool istransparent)
     }
     m_image_temp = m_image;
     m_current_image = &m_image_temp;
-    images.clear();
-    images.push_back(*m_current_image);
+    pointsThis.clear();
 }
 
 void WhiteBoard::paint()
 {
-    if(g_draw_type == ERASE)
+    if(!m_pressed)
     {
-        if(m_pressed)
-            points.push_back(m_move_start_point);
-        else
+        if(g_draw_type == ERASE)
         {
             m_current_image = &m_image_temp;
-            QPolygonF polygon(points);
+            QPolygonF polygon(pointsTemp);
             QPainterPath painterpath;
             painterpath.addPolygon(polygon);
             QPainter painter;
@@ -61,17 +58,19 @@ void WhiteBoard::paint()
             painter.end();
             return;
         }
-    }
-    else if(g_draw_type == SELECT)
-    {
-        if(!m_pressed)
+        else if(g_draw_type == SELECT)
         {
             m_current_image = &m_image_temp;
         }
     }
 
     QPen pen;
-    pen.setColor(g_draw_color);
+    if(g_draw_type == ERASE)
+        pen.setColor(LOCALCLEAR_COLOR);
+    else if(g_draw_type == SELECT)
+        pen.setColor(SELECT_COLOR);
+    else
+        pen.setColor(g_draw_color);
     pen.setWidth(g_draw_width);
     QPainter painter;
     painter.begin(m_current_image);
@@ -89,21 +88,44 @@ void WhiteBoard::fullclear()
     update();
 }
 
-void WhiteBoard::localclear()
-{
-    g_draw_color = QColor(34, 177, 76);
-    m_image_clear = m_image_temp;
-    m_current_image = &m_image_clear;
-    points.clear();
-}
-
 void WhiteBoard::revocation()
 {
-    if(images.size() < 2)
-        return;
-    m_current_image = (QImage *)(&(images.at(images.size() - 2)));
+    if(pointsThis.isEmpty()) return;
+    m_image_temp = m_image;
+    m_current_image = &m_image_temp;
+    for(int i = 0; i < pointsThis.size() - 1; i++)
+    {
+        if(pointsThis.at(i).erase)
+        {
+            QPolygonF polygon(pointsThis.at(i).points);
+            QPainterPath painterpath;
+            painterpath.addPolygon(polygon);
+            QPainter painter;
+            painter.begin(m_current_image);
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setCompositionMode(QPainter::CompositionMode_Source);
+            painter.fillPath(painterpath, QColor(0, 0, 0, 0));
+            painter.end();
+        }
+        else
+        {
+            QPen pen;
+            pen.setColor(pointsThis.at(i).color);
+            pen.setWidth(pointsThis.at(i).width);
+            QPolygonF polygon(pointsThis.at(i).points);
+            QPainterPath painterpath;
+            painterpath.addPolygon(polygon);
+            QPainter painter;
+            painter.begin(m_current_image);
+            painter.setPen(pen);
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setCompositionMode(QPainter::CompositionMode_Source);
+            painter.drawPath(painterpath);
+            painter.end();
+        }
+    }
     update();
-    images.pop_back();
+    pointsThis.pop_back();
 }
 
 void WhiteBoard::paintEvent(QPaintEvent *event)
@@ -117,41 +139,43 @@ void WhiteBoard::paintEvent(QPaintEvent *event)
 void WhiteBoard::mousePressEvent(QMouseEvent *event)
 {
     m_pressed = true;
-
     m_start_point = event->pos();
-    m_end_point = NULL_POINT;
     m_move_start_point = event->pos();
-
-    if(g_draw_type == ERASE)
+    if(g_draw_type != DRAW)
     {
-        localclear();
+        m_image_temp_2 = m_image_temp;
+        m_current_image = &m_image_temp_2;
     }
-    else if(g_draw_type == SELECT)
-    {
-        g_draw_color = QColor(255, 201, 14);
-        m_image_select = m_image_temp;
-        m_current_image = &m_image_select;
-    }
+    pointsTemp.clear();
 }
 
 void WhiteBoard::mouseMoveEvent(QMouseEvent *event)
 {
     m_end_point = event->pos();
     paint();
-
+    pointsTemp.push_back(m_move_start_point);
     static int count = 0;
-    if (count++ % 3 == 0)
-        update();
-
+    if (count++ % 3 == 0) update();
     m_move_start_point = event->pos();
 }
 
 void WhiteBoard::mouseReleaseEvent(QMouseEvent *event)
 {
+    pointsTemp.push_back(m_move_start_point);
     m_pressed = false;
     m_end_point = event->pos();
     paint();
     update();
     if(g_draw_type != SELECT)
-        images.push_back(*m_current_image);
+    {
+        Points points_temp = {0};
+        if(g_draw_type == DRAW)
+            points_temp.erase = false;
+        else
+            points_temp.erase = true;
+        points_temp.color = g_draw_color;
+        points_temp.width = g_draw_width;
+        points_temp.points = pointsTemp;
+        pointsThis.push_back(points_temp);
+    }
 }
