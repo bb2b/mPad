@@ -168,7 +168,7 @@ void WhiteBoard::mouseReleaseEvent(QMouseEvent *event)
     update();
     if(g_draw_type != SELECT)
     {
-        Points points_temp = {0};
+        Points points_temp;
         if(g_draw_type == DRAW)
             points_temp.erase = false;
         else
