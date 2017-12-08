@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     whiteboard.cpp \
     switchboard.cpp \
     global.cpp \
-    xwidget.cpp
+    xwidget.cpp \
+    screenshot.cpp
 
 HEADERS  += mainwindow.h \
     panel.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     whiteboard.h \
     switchboard.h \
     global.h \
-    xwidget.h
+    xwidget.h \
+    screenshot.h
 
 FORMS    += mainwindow.ui \
     panel.ui \

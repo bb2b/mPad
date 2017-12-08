@@ -333,12 +333,23 @@ void PaintToolBar::on_select_clicked()
 
 void PaintToolBar::on_fullsave_clicked()
 {
-
+    g_panel->hide();
+    g_notebar->hide();
+    g_switchboard->hide();
+    QPixmap pixmap = QApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(), 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+    QString savepath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    savepath += generate_name_by_current_time();
+    pixmap.save(savepath, "JPG", 100);
+    g_panel->show();
+    g_notebar->show();
+    g_switchboard->show();
 }
 
 void PaintToolBar::on_localsave_clicked()
 {
-
+    g_screenshot->prepare();
+    g_screenshot->show();
+    set_window_top_hint(g_screenshot, HWND_TOPMOST, true);
 }
 
 void PaintToolBar::on_fullclear_clicked()

@@ -1,9 +1,5 @@
 #include "whiteboard.h"
 #include "global.h"
-#include <QPixmap>
-#include <QScreen>
-#include <QDesktopWidget>
-#include <QApplication>
 #include <QPolygonF>
 #include <QPainterPath>
 

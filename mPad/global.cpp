@@ -19,3 +19,9 @@ void set_window_foreground(QWidget *widget)
         WRITE_LOG("SetForegroundWindow error: %d", GetLastError());
     }
 }
+
+QString generate_name_by_current_time()
+{
+    QDateTime time = QDateTime::currentDateTime();
+    return "\\" + time.toString("yyyyMMddhhmmss") + ".jpg";
+}

@@ -4,11 +4,18 @@
 #include <windows.h>
 #include <QTextCodec>
 #include <QColor>
+#include <QPixmap>
+#include <QScreen>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QTime>
+#include <QStandardPaths>
 #include "notebar.h"
 #include "panel.h"
 #include "switchboard.h"
 #include "whiteboard.h"
 #include "mainwindow.h"
+#include "screenshot.h"
 
 // 是否打印调试信息
 #define SUPPORT_DBG         1
@@ -42,12 +49,14 @@ extern Panel *g_panel;
 extern SwitchBoard *g_switchboard;
 extern WhiteBoard *g_whiteboard;
 extern MainWindow *g_mainwindow;
+extern ScreenShot *g_screenshot;
 extern int g_draw_width;
 extern QColor g_draw_color;
 extern int g_draw_type;
 
 extern void set_window_top_hint(QWidget *widget, HWND hWndlnsertAfter, bool active);
 extern void set_window_foreground(QWidget *widget);
+extern QString generate_name_by_current_time(); //将当前时间转换成唯一文件名
 
 #endif // GLOBAL
 
