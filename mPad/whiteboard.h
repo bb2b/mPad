@@ -27,10 +27,11 @@ public:
     WhiteBoard();
     ~WhiteBoard();
 
-    void prepare(bool istransparent);
+    void prepare(bool isTransparent);
     void paint();
     void fullclear();
     void revocation();
+    void roaming();
 
 protected:
     void paintEvent(QPaintEvent *event);

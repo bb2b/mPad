@@ -19,16 +19,16 @@ WhiteBoard::~WhiteBoard()
 {
 }
 
-void WhiteBoard::prepare(bool istransparent)
+void WhiteBoard::prepare(bool isTransparent)
 {
     m_image = QImage(this->width(), this->height(), QImage::Format_ARGB32);
-    if(istransparent)
+    if(isTransparent)
     {
         QPixmap pixmap = QApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId(), 0, 0, this->width(), this->height());
         QPalette pal(palette());
         pal.setBrush(QPalette::Background, QBrush(pixmap));
         setPalette(pal);
-        m_image.fill(QColor(0, 0, 0, 1));
+        m_image.fill(QColor(0, 0, 0, 0));
     }
     else
     {
@@ -62,6 +62,49 @@ void WhiteBoard::paint()
         {
             m_current_image = &m_image_temp;
         }
+    }
+
+    if(g_draw_type == ROAMING)
+    {
+        m_image_temp = m_image;
+        m_current_image = &m_image_temp;
+        for(int i = 0; i < pointsThis.size(); i++)
+        {
+            for(int j = 0; j < pointsThis.at(i).points.size(); j++)
+            {
+                pointsThis[i].points[j] += m_end_point;
+                pointsThis[i].points[j] -= m_move_start_point;
+            }
+            if(pointsThis.at(i).erase)
+            {
+                QPolygonF polygon(pointsThis.at(i).points);
+                QPainterPath painterpath;
+                painterpath.addPolygon(polygon);
+                QPainter painter;
+                painter.begin(m_current_image);
+                painter.setRenderHint(QPainter::Antialiasing);
+                painter.setCompositionMode(QPainter::CompositionMode_Source);
+                painter.fillPath(painterpath, QColor(0, 0, 0, 0));
+                painter.end();
+            }
+            else
+            {
+                QPen pen;
+                pen.setColor(pointsThis.at(i).color);
+                pen.setWidth(pointsThis.at(i).width);
+                QPolygonF polygon(pointsThis.at(i).points);
+                QPainterPath painterpath;
+                painterpath.addPolygon(polygon);
+                QPainter painter;
+                painter.begin(m_current_image);
+                painter.setPen(pen);
+                painter.setRenderHint(QPainter::Antialiasing);
+                painter.setCompositionMode(QPainter::CompositionMode_Source);
+                painter.drawPath(painterpath);
+                painter.end();
+            }
+        }
+        return;
     }
 
     QPen pen;
@@ -141,19 +184,25 @@ void WhiteBoard::mousePressEvent(QMouseEvent *event)
     m_pressed = true;
     m_start_point = event->pos();
     m_move_start_point = event->pos();
-    if(g_draw_type != DRAW)
+    if(g_draw_type == ERASE || g_draw_type == SELECT)
     {
         m_image_temp_2 = m_image_temp;
         m_current_image = &m_image_temp_2;
     }
-    pointsTemp.clear();
+    if(g_draw_type == ROAMING)
+    {
+        setCursor(Qt::SizeAllCursor);
+    }
+    else
+        pointsTemp.clear();
 }
 
 void WhiteBoard::mouseMoveEvent(QMouseEvent *event)
 {
     m_end_point = event->pos();
     paint();
-    pointsTemp.push_back(m_move_start_point);
+    if(g_draw_type != ROAMING)
+        pointsTemp.push_back(m_move_start_point);
     static int count = 0;
     if (count++ % 3 == 0) update();
     m_move_start_point = event->pos();
@@ -161,12 +210,17 @@ void WhiteBoard::mouseMoveEvent(QMouseEvent *event)
 
 void WhiteBoard::mouseReleaseEvent(QMouseEvent *event)
 {
-    pointsTemp.push_back(m_move_start_point);
+    if(g_draw_type == ROAMING)
+    {
+        setCursor(Qt::ArrowCursor);
+    }
+    else
+        pointsTemp.push_back(m_move_start_point);
     m_pressed = false;
     m_end_point = event->pos();
     paint();
     update();
-    if(g_draw_type != SELECT)
+    if(g_draw_type != SELECT || g_draw_type != ROAMING)
     {
         Points points_temp;
         if(g_draw_type == DRAW)
