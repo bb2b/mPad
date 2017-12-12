@@ -1,4 +1,4 @@
-#include "xwidget.h"
+#include "xlabel.h"
 
 XLabel::XLabel(QWidget *parent) : QLabel(parent)
 {

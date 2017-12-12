@@ -7,7 +7,7 @@
 #include <QHBoxLayout>
 #include <QGridLayout>
 #include <QFrame>
-#include "xwidget.h"
+#include "xlabel.h"
 
 class PaintToolBar;
 

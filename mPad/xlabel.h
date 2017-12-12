@@ -1,5 +1,5 @@
-#ifndef XWIDGET
-#define XWIDGET
+#ifndef XLABEL
+#define XLABEL
 #include <QLabel>
 #include <QMouseEvent>
 
@@ -21,5 +21,5 @@ public slots:
     void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
-#endif // XWIDGET
+#endif // XLABEL
 

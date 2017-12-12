@@ -1,15 +1,12 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::MainWindow)
+    QWidget(parent)
 {
-    ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
+    this->setStyleSheet("background-color: rgb(255, 170, 127);");
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
 }
