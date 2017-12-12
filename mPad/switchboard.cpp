@@ -1,22 +1,32 @@
 #include "switchboard.h"
-#include "ui_switchboard.h"
 #include "global.h"
 
 SwitchBoard::SwitchBoard(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SwitchBoard)
+    QWidget(parent)
   , b_move_direction(true)
 {
-    ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry((GetSystemMetrics(SM_CXSCREEN) - 75) / 2, 0, 75, 23);
+
+    vLayout = new QVBoxLayout(this);
+    vLayout->setContentsMargins(0,0,0,0);
+    vLayout->setSpacing(0);
+
+    QTextCodec *codec = QTextCodec::codecForName("GBK");
+    pushButton = new QPushButton(this);
+    pushButton->setText(codec->toUnicode("ÏÂÀ­"));
+    connect(pushButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
+
+    vLayout->addWidget(pushButton);
+    this->setLayout(vLayout);
 
     connect(&move_timer, SIGNAL(timeout()), this, SLOT(on_move_timer_out()));
 }
 
 SwitchBoard::~SwitchBoard()
 {
-    delete ui;
+    delete pushButton;
+    delete vLayout;
 }
 
 void SwitchBoard::on_pushButton_clicked()

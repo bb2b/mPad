@@ -4,10 +4,8 @@
 #include <QWidget>
 #include <QTimer>
 #include <QTimerEvent>
-
-namespace Ui {
-class SwitchBoard;
-}
+#include <QPushButton>
+#include <QVBoxLayout>
 
 class SwitchBoard : public QWidget
 {
@@ -22,9 +20,10 @@ private slots:
     void on_move_timer_out();
 
 private:
-    Ui::SwitchBoard *ui;
     QTimer move_timer;
     bool b_move_direction;  //true表示向下，false表示向上
+    QPushButton *pushButton;
+    QVBoxLayout *vLayout;
 };
 
 #endif // SWITCHBOARD_H

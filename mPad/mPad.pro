@@ -31,7 +31,4 @@ HEADERS  += mainwindow.h \
     screenshot.h \
     xlabel.h
 
-FORMS    += mainwindow.ui \
-    panel.ui \
-    notebar.ui \
-    switchboard.ui
+FORMS    +=

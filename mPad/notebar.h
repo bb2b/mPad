@@ -11,10 +11,6 @@
 
 class PaintToolBar;
 
-namespace Ui {
-class NoteBar;
-}
-
 class NoteBar : public QWidget
 {
     Q_OBJECT
@@ -31,7 +27,6 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
 
 private:
-    Ui::NoteBar *ui;
     bool b_move;
     QPoint m_last_point;
     QPoint m_absolute_point;

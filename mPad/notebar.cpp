@@ -1,12 +1,9 @@
 #include "notebar.h"
-#include "ui_notebar.h"
 #include "global.h"
 
 NoteBar::NoteBar(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::NoteBar)
+    QWidget(parent)
 {
-    ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 120, 60, 60);
 
@@ -17,7 +14,6 @@ NoteBar::NoteBar(QWidget *parent) :
 
 NoteBar::~NoteBar()
 {
-    delete ui;
     delete g_painttoolbar;
 }
 
