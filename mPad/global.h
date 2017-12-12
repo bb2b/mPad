@@ -10,9 +10,9 @@
 #include <QDesktopWidget>
 #include <QTime>
 #include <QStandardPaths>
-#include "notebar.h"
-#include "panel.h"
-#include "switchboard.h"
+#include "note_bar.h"
+#include "desktop_switch_bar.h"
+#include "whiteboard_switch_button.h"
 #include "whiteboard.h"
 #include "mainwindow.h"
 #include "screenshot.h"

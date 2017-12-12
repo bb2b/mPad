@@ -18,17 +18,17 @@ SOURCES += main.cpp\
     whiteboard.cpp \
     global.cpp \
     screenshot.cpp \
-    xlabel.cpp \
     desktop_switch_bar.cpp \
-    whiteboard_switch_button.cpp
+    whiteboard_switch_button.cpp \
+    mylabel.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
     global.h \
     screenshot.h \
-    xlabel.h \
     desktop_switch_bar.h \
     note_bar.h \
-    whiteboard_switch_button.h
+    whiteboard_switch_button.h \
+    mylabel.h
 
 FORMS    +=
