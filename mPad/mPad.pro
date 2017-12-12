@@ -14,21 +14,21 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    panel.cpp \
     notebar.cpp \
     whiteboard.cpp \
-    switchboard.cpp \
     global.cpp \
     screenshot.cpp \
-    xlabel.cpp
+    xlabel.cpp \
+    desktop_switch_bar.cpp \
+    whiteboard_switch_button.cpp
 
 HEADERS  += mainwindow.h \
-    panel.h \
-    notebar.h \
     whiteboard.h \
-    switchboard.h \
     global.h \
     screenshot.h \
-    xlabel.h
+    xlabel.h \
+    desktop_switch_bar.h \
+    note_bar.h \
+    whiteboard_switch_button.h
 
 FORMS    +=
