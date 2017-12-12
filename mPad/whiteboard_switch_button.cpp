@@ -1,4 +1,4 @@
-#include "whiteboard_switch_button.h"
+ï»¿#include "whiteboard_switch_button.h"
 #include "global.h"
 
 SwitchBoard::SwitchBoard(QWidget *parent) :
@@ -12,9 +12,8 @@ SwitchBoard::SwitchBoard(QWidget *parent) :
     vLayout->setContentsMargins(0,0,0,0);
     vLayout->setSpacing(0);
 
-    QTextCodec *codec = QTextCodec::codecForName("GBK");
     pushButton = new QPushButton(this);
-    pushButton->setText(codec->toUnicode("ÏÂÀ­"));
+    pushButton->setText("ä¸‹æ‹‰");
     connect(pushButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
 
     vLayout->addWidget(pushButton);
@@ -55,6 +54,7 @@ void SwitchBoard::on_move_timer_out()
             move_timer.stop();
             g_notebar->on_painttoolbar(false);
             g_desktopswitchbar->hide();
+            pushButton->setText("ä¸Šæ‹‰");
             return;
         }
     }
@@ -72,6 +72,7 @@ void SwitchBoard::on_move_timer_out()
             move_timer.stop();
             g_notebar->on_painttoolbar(true);
             g_desktopswitchbar->show();
+            pushButton->setText("ä¸‹æ‹‰");
             return;
         }
     }

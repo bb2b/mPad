@@ -1,7 +1,7 @@
 #ifndef WHITEBOARD_H
 #define WHITEBOARD_H
 
-#include <QLabel>
+#include <QWidget>
 #include <QImage>
 #include <QPen>
 #include <QBrush>
@@ -19,12 +19,12 @@ typedef struct{
     QVector<QPoint> points;
 }Points;
 
-class WhiteBoard : public QLabel
+class WhiteBoard : public QWidget
 {
     Q_OBJECT
 
 public:
-    WhiteBoard();
+    explicit WhiteBoard(QWidget *parent = 0);
     ~WhiteBoard();
 
     void prepare(bool isTransparent);

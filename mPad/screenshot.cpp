@@ -1,20 +1,19 @@
-#include "screenshot.h"
+ï»¿#include "screenshot.h"
 #include "global.h"
 
-ScreenShot::ScreenShot()
+ScreenShot::ScreenShot(QWidget *parent) : QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
 
-    QTextCodec *codec = QTextCodec::codecForName("GBK");
     m_close = new QPushButton(this);
-    m_close->setText(codec->toUnicode("¹Ø±Õ"));
+    m_close->setText("å…³é—­");
     connect(m_close, SIGNAL(clicked()), this, SLOT(on_close_button_clicked()));
     m_ok = new QPushButton(this);
-    m_ok->setText(codec->toUnicode("±£´æ"));
+    m_ok->setText("ä¿å­˜");
     connect(m_ok, SIGNAL(clicked()), this, SLOT(on_ok_button_clicked()));
     m_zoomin = new QPushButton(this);
-    m_zoomin->setText(codec->toUnicode("·Å´ó"));
+    m_zoomin->setText("æ”¾å¤§");
     connect(m_zoomin, SIGNAL(clicked()), this, SLOT(on_zoomin_button_clicked()));
 }
 

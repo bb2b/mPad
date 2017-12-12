@@ -3,7 +3,7 @@
 #include <QPolygonF>
 #include <QPainterPath>
 
-WhiteBoard::WhiteBoard()
+WhiteBoard::WhiteBoard(QWidget *parent) : QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     //this->setAttribute(Qt::WA_TranslucentBackground, true);

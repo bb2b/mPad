@@ -1,18 +1,18 @@
 ﻿#ifndef SCREENSHOT_H
 #define SCREENSHOT_H
 
-#include <QLabel>
+#include <QWidget>
 #include <QPushButton>
 #include <QImage>
 #include <QPaintEvent>
 #include <QMouseEvent>
 
-class ScreenShot : public QLabel
+class ScreenShot : public QWidget
 {
     Q_OBJECT
 
 public:
-    ScreenShot();
+    explicit ScreenShot(QWidget *parent = 0);
     ~ScreenShot();
 
     void prepare();

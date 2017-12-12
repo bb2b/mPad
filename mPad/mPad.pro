@@ -20,7 +20,10 @@ SOURCES += main.cpp\
     screenshot.cpp \
     desktop_switch_bar.cpp \
     whiteboard_switch_button.cpp \
-    mylabel.cpp
+    mylabel.cpp \
+    settingpanel.cpp \
+    localpanel.cpp \
+    usbpanel.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -29,6 +32,9 @@ HEADERS  += mainwindow.h \
     desktop_switch_bar.h \
     whiteboard_switch_button.h \
     mylabel.h \
-    notebar.h
+    notebar.h \
+    settingpanel.h \
+    localpanel.h \
+    usbpanel.h
 
 FORMS    +=

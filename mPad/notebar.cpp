@@ -1,4 +1,4 @@
-#include "notebar.h"
+ï»¿#include "notebar.h"
 #include "global.h"
 
 NoteBar::NoteBar(QWidget *parent) :
@@ -7,14 +7,14 @@ NoteBar::NoteBar(QWidget *parent) :
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 120, 60, 60);
 
-    g_painttoolbar = new PaintToolBar;
-    set_window_top_hint(g_painttoolbar, HWND_TOPMOST, true);
-    g_painttoolbar->hide();
+    m_painttoolbar = new PaintToolBar;
+    set_window_top_hint(m_painttoolbar, HWND_TOPMOST, true);
+    m_painttoolbar->hide();
 }
 
 NoteBar::~NoteBar()
 {
-    delete g_painttoolbar;
+    delete m_painttoolbar;
 }
 
 void NoteBar::mousePressEvent(QMouseEvent *event)
@@ -29,8 +29,8 @@ void NoteBar::mouseMoveEvent(QMouseEvent *event)
     if(b_move)
     {
         this->move(this->pos() + event->pos() - m_last_point);
-        if(g_painttoolbar->isVisible())
-            g_painttoolbar->move(g_painttoolbar->pos() + event->pos() - m_last_point);
+        if(m_painttoolbar->isVisible())
+            m_painttoolbar->move(m_painttoolbar->pos() + event->pos() - m_last_point);
     }
 }
 
@@ -38,10 +38,10 @@ void NoteBar::mouseReleaseEvent(QMouseEvent *event)
 {
     b_move = false;
 
-    //Èç¹ûÎ´ÒÆ¶¯£¬ÔòÅÐ¶¨Îªµã»÷
+    //å¦‚æžœæœªç§»åŠ¨ï¼Œåˆ™åˆ¤å®šä¸ºç‚¹å‡»
     if(m_absolute_point == event->globalPos())
     {
-        on_painttoolbar(g_painttoolbar->isVisible());
+        on_painttoolbar(m_painttoolbar->isVisible());
     }
 }
 
@@ -49,22 +49,23 @@ void NoteBar::on_painttoolbar(bool flag)
 {
     if(flag)
     {
-        g_painttoolbar->hide();
+        m_painttoolbar->hide();
         g_whiteboard->move(0, -g_whiteboard->height());
         set_window_top_hint(g_whiteboard, HWND_BOTTOM, false);
     }
     else
     {
-        g_painttoolbar->setGeometry(this->pos().x(), this->pos().y() - 410, 60, 410);
-        g_painttoolbar->on_brush_clicked();
-        g_painttoolbar->show();
+        m_painttoolbar->setGeometry(this->pos().x(), this->pos().y() - 410, 60, 410);
+        m_painttoolbar->on_brush_clicked();
+        m_painttoolbar->show();
         g_whiteboard->prepare(true);
         g_whiteboard->move(0,0);
         set_window_top_hint(g_whiteboard, HWND_TOP, true);
     }
 }
 
-PaintToolBar::PaintToolBar()
+PaintToolBar::PaintToolBar(QWidget *parent) :
+    QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
@@ -85,56 +86,55 @@ PaintToolBar::PaintToolBar()
     h_frame_2 = new QFrame;
     g_frame = new QFrame;
 
-    QTextCodec *codec = QTextCodec::codecForName("GBK");
     x_roaming = new myLabel(NULL);
     connect(x_roaming, SIGNAL(clicked()), this, SLOT(on_roaming_clicked()));
     x_roaming->setFixedSize(30, 30);
-    x_roaming->setText(codec->toUnicode("ÂþÓÎ"));
+    x_roaming->setText("æ¼«æ¸¸");
     x_roaming->setFrameShape(QFrame::Box);
     x_select = new myLabel(NULL);
     connect(x_select, SIGNAL(clicked()), this, SLOT(on_select_clicked()));
     x_select->setFixedSize(30, 30);
-    x_select->setText(codec->toUnicode("È¦Ñ¡"));
+    x_select->setText("åœˆé€‰");
     x_select->setFrameShape(QFrame::Box);
     x_fullsave = new myLabel(NULL);
     connect(x_fullsave, SIGNAL(clicked()), this, SLOT(on_fullsave_clicked()));
     x_fullsave->setFixedSize(60, 50);
-    x_fullsave->setText(codec->toUnicode("È«ÆÁ±£´æ"));
+    x_fullsave->setText("å…¨å±ä¿å­˜");
     x_localsave = new myLabel(NULL);
     connect(x_localsave, SIGNAL(clicked()), this, SLOT(on_localsave_clicked()));
     x_localsave->setFixedSize(60, 50);
-    x_localsave->setText(codec->toUnicode("½ØÆÁ±£´æ"));
+    x_localsave->setText("æˆªå±ä¿å­˜");
     x_fullclear = new myLabel(NULL);
     connect(x_fullclear, SIGNAL(clicked()), this, SLOT(on_fullclear_clicked()));
     x_fullclear->setFixedSize(60, 50);
-    x_fullclear->setText(codec->toUnicode("ÇåÆÁ"));
+    x_fullclear->setText("æ¸…å±");
     x_localclear = new myLabel(NULL);
     connect(x_localclear, SIGNAL(clicked()), this, SLOT(on_localclear_clicked()));
     x_localclear->setFixedSize(60, 50);
-    x_localclear->setText(codec->toUnicode("¾Ö²¿Çå³ý"));
+    x_localclear->setText("å±€éƒ¨æ¸…é™¤");
     x_revocation = new myLabel(NULL);
     connect(x_revocation, SIGNAL(clicked()), this, SLOT(on_revocation_clicked()));
     x_revocation->setFixedSize(60, 50);
-    x_revocation->setText(codec->toUnicode("³·Ïú"));
+    x_revocation->setText("æ’¤é”€");
     x_brush = new myLabel(NULL);
     connect(x_brush, SIGNAL(clicked()), this, SLOT(on_brush_clicked()));
     x_brush->setFixedSize(60, 50);
-    x_brush->setText(codec->toUnicode("»­Ë¢"));
+    x_brush->setText("ç”»åˆ·");
     x_brush->setFrameShape(QFrame::Box);
     x_sPoint = new myLabel(NULL);
     connect(x_sPoint, SIGNAL(clicked()), this, SLOT(on_spoint_clicked()));
     x_sPoint->setFixedSize(20, 20);
-    x_sPoint->setText(codec->toUnicode("Ð¡"));
+    x_sPoint->setText("å°");
     x_sPoint->setFrameShape(QFrame::Box);
     x_mPoint = new myLabel(NULL);
     connect(x_mPoint, SIGNAL(clicked()), this, SLOT(on_mpoint_clicked()));
     x_mPoint->setFixedSize(20, 20);
-    x_mPoint->setText(codec->toUnicode("ÖÐ"));
+    x_mPoint->setText("ä¸­");
     x_mPoint->setFrameShape(QFrame::Box);
     x_bPoint = new myLabel(NULL);
     connect(x_bPoint, SIGNAL(clicked()), this, SLOT(on_bpoint_clicked()));
     x_bPoint->setFixedSize(20, 20);
-    x_bPoint->setText(codec->toUnicode("´ó"));
+    x_bPoint->setText("å¤§");
     x_bPoint->setFrameShape(QFrame::Box);
     x_red = new myLabel(NULL);
     connect(x_red, SIGNAL(clicked()), this, SLOT(on_red_clicked()));

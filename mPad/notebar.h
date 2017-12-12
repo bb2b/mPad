@@ -2,7 +2,6 @@
 #define NOTEBAR_H
 
 #include <QWidget>
-#include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -30,15 +29,15 @@ private:
     bool b_move;
     QPoint m_last_point;
     QPoint m_absolute_point;
-    PaintToolBar *g_painttoolbar;
+    PaintToolBar *m_painttoolbar;
 };
 
-class PaintToolBar : public QLabel
+class PaintToolBar : public QWidget
 {
     Q_OBJECT
 
 public:
-    PaintToolBar();
+    explicit PaintToolBar(QWidget *parent = 0);
     ~PaintToolBar();
 
     void on_point_clear();

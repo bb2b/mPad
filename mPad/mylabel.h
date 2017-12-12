@@ -8,7 +8,7 @@ class myLabel : public QLabel
 Q_OBJECT
 
 public:
-    myLabel(QWidget *parent);
+    explicit myLabel(QWidget *parent = 0);
     ~myLabel();
 
 signals:
