@@ -27,8 +27,8 @@ HEADERS  += mainwindow.h \
     global.h \
     screenshot.h \
     desktop_switch_bar.h \
-    note_bar.h \
     whiteboard_switch_button.h \
-    mylabel.h
+    mylabel.h \
+    notebar.h
 
 FORMS    +=

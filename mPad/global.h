@@ -10,7 +10,7 @@
 #include <QDesktopWidget>
 #include <QTime>
 #include <QStandardPaths>
-#include "note_bar.h"
+#include "notebar.h"
 #include "desktop_switch_bar.h"
 #include "whiteboard_switch_button.h"
 #include "whiteboard.h"
@@ -46,7 +46,7 @@ static inline void WriteLog(const char* format, ...)
 #endif
 
 extern NoteBar *g_notebar;
-extern Panel *g_panel;
+extern DesktopSwitchBar *g_desktopswitchbar;
 extern SwitchBoard *g_switchboard;
 extern WhiteBoard *g_whiteboard;
 extern MainWindow *g_mainwindow;

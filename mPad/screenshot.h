@@ -1,5 +1,5 @@
-#ifndef SCREENSHOT
-#define SCREENSHOT
+﻿#ifndef SCREENSHOT_H
+#define SCREENSHOT_H
 
 #include <QLabel>
 #include <QPushButton>
@@ -44,5 +44,5 @@ private:
     QPixmap pixmap;
 };
 
-#endif // SCREENSHOT
+#endif // SCREENSHOT_H
 
