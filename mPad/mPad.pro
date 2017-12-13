@@ -23,7 +23,10 @@ SOURCES += main.cpp\
     mylabel.cpp \
     settingpanel.cpp \
     localpanel.cpp \
-    usbpanel.cpp
+    usbpanel.cpp \
+    file_manage_window.cpp \
+    file_manage_popup.cpp \
+    file.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -35,6 +38,12 @@ HEADERS  += mainwindow.h \
     notebar.h \
     settingpanel.h \
     localpanel.h \
-    usbpanel.h
+    usbpanel.h \
+    file_manage_window.h \
+    file_manage_popup.h \
+    file.h
 
 FORMS    +=
+
+RESOURCES += \
+    res.qrc

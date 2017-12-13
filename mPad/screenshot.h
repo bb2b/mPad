@@ -15,6 +15,7 @@ public:
     explicit ScreenShot(QWidget *parent = 0);
     ~ScreenShot();
 
+public:
     void prepare();
     void paint();
 

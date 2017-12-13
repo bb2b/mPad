@@ -18,6 +18,7 @@ public:
     explicit NoteBar(QWidget *parent = 0);
     ~NoteBar();
 
+public:
     void on_painttoolbar(bool flag);
 
 protected:
@@ -40,6 +41,7 @@ public:
     explicit PaintToolBar(QWidget *parent = 0);
     ~PaintToolBar();
 
+public:
     void on_point_clear();
     void on_color_clear();
     void on_point_set();

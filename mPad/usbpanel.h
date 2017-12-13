@@ -12,6 +12,7 @@ public:
     explicit UsbPanel(QWidget *parent = 0);
     ~UsbPanel();
 
+public:
     void resizeAll();
 
 public slots:

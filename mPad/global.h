@@ -26,6 +26,8 @@
 #define SELECT_COLOR        QColor(255, 201, 14)
 #define LOCALCLEAR_COLOR    QColor(34, 177, 76)
 
+enum FileType{DIRECTORY, PICTURE, MOVIE, OFFICEPPT, OFFICEWORD, OFFICEEXCEL, PDF, OTHER, HTML};
+
 // 打印调试日志
 static inline void WriteLog(const char* format, ...)
 {

@@ -12,6 +12,7 @@ public:
     explicit SettingPanel(QWidget *parent = 0);
     ~SettingPanel();
 
+public:
     void resizeAll();
 
 public slots:

@@ -27,6 +27,7 @@ public:
     explicit WhiteBoard(QWidget *parent = 0);
     ~WhiteBoard();
 
+public:
     void prepare(bool isTransparent);
     void paint();
     void fullclear();
