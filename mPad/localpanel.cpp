@@ -3,7 +3,6 @@
 
 LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent)
 {
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setStyleSheet("background-color:rgb(188,188,188);");
 
     m_all_files = new myLabel(this);

@@ -5,7 +5,7 @@ NoteBar::NoteBar(QWidget *parent) :
     QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
-    this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 120, 60, 60);
+    this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 200, 60, 60);
 
     m_painttoolbar = new PaintToolBar;
     set_window_top_hint(m_painttoolbar, HWND_TOPMOST, true);

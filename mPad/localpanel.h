@@ -1,7 +1,7 @@
 #ifndef LOCALPANEL_H
 #define LOCALPANEL_H
 
-#include <QLabel>
+#include <QWidget>
 #include <QHBoxLayout>
 #include "mylabel.h"
 

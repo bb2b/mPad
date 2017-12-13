@@ -3,7 +3,6 @@
 
 SettingPanel::SettingPanel(QWidget *parent) : QWidget(parent)
 {
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setStyleSheet("background-color:gray;");
 
     m_setting = new QPushButton(this);
