@@ -1,20 +1,23 @@
 #ifndef FILEMANAGEWINDOW_H
 #define FILEMANAGEWINDOW_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QVector>
 #include <QLabel>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include "file.h"
+#include "global.h"
 
-class FileManageWindow : public QWidget
+class FileManageWindow : public QDialog
 {
     Q_OBJECT
 public:
-    explicit FileManageWindow(QString directory, QWidget *parent = 0);
+    explicit FileManageWindow(FilterType filtertype, QString directory, QWidget *parent = 0);
     ~FileManageWindow();
 
 protected:
@@ -22,6 +25,11 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
+
+public slots:
+    void on_return_button_clicked();
+    void on_manage_button_clicked();
+    void on_close_button_clicked();
 
 private:
     QString original_directory;
@@ -40,6 +48,13 @@ private:
     QPushButton *m_share_button;
     QLabel *m_share_label;
     QScrollArea *m_scrollarea;
+    QWidget *m_title_area;
+    QWidget *m_files_area;
+    QVBoxLayout *m_vlayout;
+    QHBoxLayout *m_hlayout;
+
+    bool b_move;
+    QPoint m_last_point;
 };
 
 #endif // FILEMANAGEWINDOW_H

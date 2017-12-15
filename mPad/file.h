@@ -4,13 +4,17 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QResizeEvent>
+#include <QIcon>
 
 class File : public QLabel
 {
     Q_OBJECT
 public:
-    explicit File(bool islarge, QString filepath, QString filename, QString filecreatetime, QString filedescription, int filesize, QWidget *parent = 0);
+    explicit File(bool islarge, QString filepath, QString filename, QWidget *parent = 0);
     ~File();
+
+public:
+    QIcon fileIcon(const QString filepath);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -20,13 +24,10 @@ protected:
 public:
     QString filePath;
     QString fileName;
-    QString fileCreateTime;
-    QString fileDescription;
-    int fileType;
-    int fileSize;
 
 private:
     bool isLargeDisplay;
+    QLabel *m_icon;
     QLabel *m_large_file_name;
     QLabel *m_tiny_bg;
     QLabel *m_tiny_file_name;

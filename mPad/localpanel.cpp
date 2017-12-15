@@ -1,5 +1,6 @@
 ﻿#include "localpanel.h"
 #include "global.h"
+#include "file_manage_window.h"
 
 LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent)
 {
@@ -89,7 +90,9 @@ void LocalPanel::resizeAll()
 
 void LocalPanel::on_all_files_clicked()
 {
-
+    FileManageWindow *filemanagewindow = new FileManageWindow(ALL, "C:\\Users\\Administrator\\Desktop\\Meeting", this->parentWidget());
+    filemanagewindow->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+    filemanagewindow->show();
 }
 
 void LocalPanel::on_note_files_clicked()

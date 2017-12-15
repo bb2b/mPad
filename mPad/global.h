@@ -27,6 +27,7 @@
 #define LOCALCLEAR_COLOR    QColor(34, 177, 76)
 
 enum FileType{DIRECTORY, PICTURE, MOVIE, OFFICEPPT, OFFICEWORD, OFFICEEXCEL, PDF, OTHER, HTML};
+enum FilterType{ALL, NOTE, PICTURES};
 
 // 打印调试日志
 static inline void WriteLog(const char* format, ...)
