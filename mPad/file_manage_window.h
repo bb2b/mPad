@@ -13,7 +13,7 @@
 #include "file.h"
 #include "global.h"
 
-class FileManageWindow : public QDialog
+class FileManageWindow : public QWidget
 {
     Q_OBJECT
 public:

@@ -5,9 +5,8 @@
 #include <QGridLayout>
 #include <QObjectList>
 
-FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWidget *parent) : QDialog(parent)
+FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWidget *parent) : QWidget(parent)
 {
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setAttribute(Qt::WA_DeleteOnClose);
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
     original_directory = directory;
@@ -395,7 +394,7 @@ void FileManageWindow::resizeEvent(QResizeEvent *event)
             File *file = (File *)filelist[j];
             file->setFixedSize((w - 10) / 8, (w - 10) / 8);
         }
-        groupbox->setFixedSize(w - 10, ((filelist.size() - 1) / 8 + 1) * (w - 10) / 8 + 15);
+        groupbox->setFixedSize(w - 10, ((filelist.size() - 1) / 8 + ((filelist.size() - 1) % 8 > 0 ? 1 : 0)) * (w - 10) / 8 + 15);
         h_count += groupbox->height();
     }
     m_files_area->setGeometry(0, 0, w - 10, h_count);
