@@ -17,13 +17,15 @@ public:
     QIcon fileIcon(const QString filepath);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *event);
 
 public:
     QString filePath;
     QString fileName;
+
+signals:
+    void clicked();
 
 private:
     bool isLargeDisplay;

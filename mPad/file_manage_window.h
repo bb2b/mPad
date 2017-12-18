@@ -10,6 +10,7 @@
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QDir>
 #include "file.h"
 #include "global.h"
 
@@ -19,6 +20,9 @@ class FileManageWindow : public QWidget
 public:
     explicit FileManageWindow(FilterType filtertype, QString directory, QWidget *parent = 0);
     ~FileManageWindow();
+
+public:
+    void init_files_area();
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -30,11 +34,12 @@ public slots:
     void on_return_button_clicked();
     void on_manage_button_clicked();
     void on_close_button_clicked();
+    void on_folder_clicked();
 
 private:
     QString original_directory;
     QString current_directory;
-    QVector<QString> directories;
+    FilterType g_filtertype;
     QLabel *m_directory_label;
     QPushButton *m_return_button;
     QPushButton *m_manage_button;
@@ -52,7 +57,7 @@ private:
     QWidget *m_files_area;
     QVBoxLayout *m_vlayout;
     QHBoxLayout *m_hlayout;
-
+    QDir *current_dir;
     bool b_move;
     QPoint m_last_point;
 };

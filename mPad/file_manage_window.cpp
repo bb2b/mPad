@@ -1,15 +1,18 @@
 ﻿#include "file_manage_window.h"
 #include <QGroupBox>
-#include <QDir>
 #include <QStringList>
 #include <QGridLayout>
 #include <QObjectList>
 
-FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWidget *parent) : QWidget(parent)
+FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWidget *parent) : QWidget(parent),
+    m_vlayout(NULL),
+    m_files_area(NULL)
 {
     this->setAttribute(Qt::WA_DeleteOnClose);
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
     original_directory = directory;
+    current_directory = directory;
+    g_filtertype = filtertype;
 
     m_title_area = new QWidget(this);
     m_title_area->setStyleSheet("QWidget{background-color:gray;}");
@@ -52,16 +55,53 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
     m_share_label = new QLabel(this);
     m_share_label->setVisible(false);
 
-    m_files_area = new QWidget();
+    current_dir = new QDir(directory);
+
+    m_scrollarea = new QScrollArea(this);
+    m_scrollarea->setStyleSheet("QScrollArea{border-width:2px;border-color:black;border-style:solid;}");
+    m_scrollarea->setFrameStyle(QFrame::NoFrame);
+    m_scrollarea->setAlignment(Qt::AlignCenter);
+
+    init_files_area();
+}
+
+FileManageWindow::~FileManageWindow()
+{
+    delete m_directory_label;
+    delete m_return_button;
+    delete m_manage_button;
+    delete m_close_button;
+    delete m_hlayout;
+    delete m_title_area;
+    delete m_generate_pdf_button;
+    delete m_send_button;
+    delete m_save_button;
+    delete m_delete_button;
+    delete m_print_button;
+    delete m_share_button;
+    delete m_manage_area;
+    delete m_share_label;
+    delete m_vlayout;
+    delete m_files_area;
+    delete m_scrollarea;
+    delete current_dir;
+}
+
+void FileManageWindow::init_files_area()
+{
+    if(m_vlayout != NULL)
+    {
+        delete m_vlayout;
+        m_vlayout = NULL;
+    }
     m_vlayout = new QVBoxLayout();
     m_vlayout->setContentsMargins(0,0,0,0);
     m_vlayout->setSpacing(0);
-    QDir dir(directory);
-    if(dir.exists())
+    if(current_dir->exists())
     {
         //列出“文件夹”,除了批注文件 窗口，其他窗口都要列出文件夹
-        QStringList dirs_list = dir.entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs);
-        if(dirs_list.size() > 0 && filtertype != NOTE)
+        QStringList dirs_list = current_dir->entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs);
+        if(dirs_list.size() > 0 && g_filtertype != NOTE)
         {
             QGroupBox *groupbox = new QGroupBox();
             groupbox->setTitle("文件夹");
@@ -88,7 +128,8 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             int v = 0;
             for(int i = 0; i < dirs_list.size(); i++)
             {
-                File *file = new File(true, directory, dirs_list.at(i));
+                File *file = new File(true, current_directory, dirs_list.at(i));
+                connect(file, SIGNAL(clicked()), this, SLOT(on_folder_clicked()));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -102,8 +143,8 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             m_vlayout->addWidget(groupbox);
         }
         //列出“文档”,只有会议收藏窗口需要列出文档
-        QStringList files_list = dir.entryList(QStringList() << "*.pdf" << "*.docx" << "*.doc" << "*.xlsx" << "*.xls" << "*.pptx" << "*.ppt");
-        if(files_list.size() > 0 && filtertype == ALL)
+        QStringList files_list = current_dir->entryList(QStringList() << "*.pdf" << "*.docx" << "*.doc" << "*.xlsx" << "*.xls" << "*.pptx" << "*.ppt");
+        if(files_list.size() > 0 && g_filtertype == ALL)
         {
             QGroupBox *groupbox = new QGroupBox();
             groupbox->setTitle("文档");
@@ -130,7 +171,7 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             int v = 0;
             for(int i = 0; i < files_list.size(); i++)
             {
-                File *file = new File(true, directory, files_list.at(i));
+                File *file = new File(true, current_directory, files_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -144,7 +185,7 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             m_vlayout->addWidget(groupbox);
         }
         //列出“图片”
-        QStringList pics_list = dir.entryList(QStringList() << "*.bmp" << "*.dib" << "*.gif" << "*.jfif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png" << "*.tif" << "*.tiff" << "*.wdp");
+        QStringList pics_list = current_dir->entryList(QStringList() << "*.bmp" << "*.dib" << "*.gif" << "*.jfif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png" << "*.tif" << "*.tiff" << "*.wdp");
         if(pics_list.size() > 0)
         {
             QGroupBox *groupbox = new QGroupBox();
@@ -172,7 +213,7 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             int v = 0;
             for(int i = 0; i < pics_list.size(); i++)
             {
-                File *file = new File(true, directory, pics_list.at(i));
+                File *file = new File(true, current_directory, pics_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -186,8 +227,8 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             m_vlayout->addWidget(groupbox);
         }
         //列出“视频”,只有会议收藏窗口需要列出视频
-        QStringList movies_list = dir.entryList(QStringList() << "*.mp4" << "*.avi" << "*.mov" << "*.wmv");
-        if(movies_list.size() > 0 && filtertype == ALL)
+        QStringList movies_list = current_dir->entryList(QStringList() << "*.mp4" << "*.avi" << "*.mov" << "*.wmv");
+        if(movies_list.size() > 0 && g_filtertype == ALL)
         {
             QGroupBox *groupbox = new QGroupBox();
             groupbox->setTitle("视频");
@@ -214,7 +255,7 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             int v = 0;
             for(int i = 0; i < movies_list.size(); i++)
             {
-                File *file = new File(true, directory, movies_list.at(i));
+                File *file = new File(true, current_directory, movies_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -228,9 +269,9 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             m_vlayout->addWidget(groupbox);
         }
         //列出“其他”
-        if(filtertype == ALL)
+        if(g_filtertype == ALL)
         {
-            QStringList all_list = dir.entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs | QDir::Files);
+            QStringList all_list = current_dir->entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs | QDir::Files);
             if(all_list.size() > 0)
             {
                 if(dirs_list.size() > 0)
@@ -288,7 +329,7 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
                     int v = 0;
                     for(int i = 0; i < all_list.size(); i++)
                     {
-                        File *file = new File(true, directory, all_list.at(i));
+                        File *file = new File(true, current_directory, all_list.at(i));
                         gridlayout->addWidget(file, h, v);
                         if(v >= 7)
                         {
@@ -304,39 +345,29 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
             }
         }
     }
+    if(m_files_area != NULL)
+    {
+        delete m_files_area;
+        m_files_area = NULL;
+    }
+    m_files_area = new QWidget();
     m_files_area->setLayout(m_vlayout);
-
-    m_scrollarea = new QScrollArea(this);
-    m_scrollarea->setStyleSheet("QScrollArea{border-width:2px;border-color:black;border-style:solid;}");
-    m_scrollarea->setFrameStyle(QFrame::NoFrame);
-    m_scrollarea->setAlignment(Qt::AlignCenter);
     m_scrollarea->setWidget(m_files_area);
-}
-
-FileManageWindow::~FileManageWindow()
-{
-    delete m_directory_label;
-    delete m_return_button;
-    delete m_manage_button;
-    delete m_close_button;
-    delete m_hlayout;
-    delete m_title_area;
-    delete m_generate_pdf_button;
-    delete m_send_button;
-    delete m_save_button;
-    delete m_delete_button;
-    delete m_print_button;
-    delete m_share_button;
-    delete m_manage_area;
-    delete m_share_label;
-    delete m_vlayout;
-    delete m_files_area;
-    delete m_scrollarea;
 }
 
 void FileManageWindow::on_return_button_clicked()
 {
+    if(current_directory == original_directory)
+        return;
 
+    if(current_dir->cdUp())
+    {
+        current_directory = current_dir->path().replace("/", "\\");
+        m_directory_label->setText(current_directory);
+        init_files_area();
+        QResizeEvent event(QSize(this->width(), this->height()), QSize(this->width(), this->height()));
+        resizeEvent(&event);
+    }
 }
 
 void FileManageWindow::on_manage_button_clicked()
@@ -347,6 +378,19 @@ void FileManageWindow::on_manage_button_clicked()
 void FileManageWindow::on_close_button_clicked()
 {
     this->close();
+}
+
+void FileManageWindow::on_folder_clicked()
+{
+    File *file = qobject_cast<File *>(sender());
+    if(current_dir->cd(file->fileName))
+    {
+        current_directory = current_directory + "\\" + file->fileName;
+        m_directory_label->setText(current_directory);
+        init_files_area();
+        QResizeEvent event(QSize(this->width(), this->height()), QSize(this->width(), this->height()));
+        resizeEvent(&event);
+    }
 }
 
 void FileManageWindow::mousePressEvent(QMouseEvent *event)

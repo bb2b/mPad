@@ -5,6 +5,8 @@
 
 File::File(bool islarge, QString filepath, QString filename, QWidget *parent) : QLabel(parent)
 {
+    setCursor(Qt::PointingHandCursor);
+
     isLargeDisplay = islarge;
     filePath = filepath;
     fileName = filename;
@@ -63,14 +65,16 @@ QIcon File::fileIcon(const QString filepath)
     return provider.icon(QFileInfo(filepath));
 }
 
-void File::mousePressEvent(QMouseEvent *event)
-{
-
-}
-
 void File::mouseReleaseEvent(QMouseEvent *event)
 {
-
+    if (event->button() == Qt::LeftButton &&\
+            event->pos().x() >= 0 &&\
+            event->pos().x() <= this->width() &&\
+            event->pos().y() >= 0 &&\
+            event->pos().y() <= this->height())
+    {
+        emit clicked();
+    }
 }
 
 void File::resizeEvent(QResizeEvent *event)
