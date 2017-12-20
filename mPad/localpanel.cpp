@@ -1,8 +1,9 @@
 ﻿#include "localpanel.h"
 #include "global.h"
-#include "file_manage_window.h"
 
-LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent)
+LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent),
+    filemanagewindow_note(NULL),
+    filemanagewindow_pic(NULL)
 {
     this->setStyleSheet("background-color:rgb(188,188,188);");
 
@@ -90,14 +91,33 @@ void LocalPanel::resizeAll()
 
 void LocalPanel::on_all_files_clicked()
 {
-    FileManageWindow *filemanagewindow = new FileManageWindow(ALL, "C:\\Users\\Administrator\\Desktop\\Meeting", this->parentWidget());
-    filemanagewindow->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
-    filemanagewindow->show();
+    if(FileManageWindow::instance_number == 0)
+    {
+        FileManageWindow *filemanagewindow = new FileManageWindow(ALL, generate_folder_on_desktop(), this->parentWidget());
+        filemanagewindow->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow->show();
+        //filemanagewindow->lower();
+    }
 }
 
 void LocalPanel::on_note_files_clicked()
 {
-
+    if(filemanagewindow_note == NULL)
+    {
+        filemanagewindow_note = new FileManageWindow(NOTE, generate_folder_on_desktop() + "/Note", this->parentWidget());
+        connect(filemanagewindow_note, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_note_close()));
+        filemanagewindow_note->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_note->show();
+        //filemanagewindow_note->lower();
+        m_note_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+    {
+        filemanagewindow_note->hide();
+        delete filemanagewindow_note;
+        filemanagewindow_note = NULL;
+        m_note_files->setStyleSheet("");
+    }
 }
 
 void LocalPanel::on_ppt_files_clicked()
@@ -122,7 +142,22 @@ void LocalPanel::on_pdf_files_clicked()
 
 void LocalPanel::on_picture_files_clicked()
 {
-
+    if(filemanagewindow_pic == NULL)
+    {
+        filemanagewindow_pic = new FileManageWindow(PICTURES, generate_folder_on_desktop(), this->parentWidget());
+        connect(filemanagewindow_pic, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_pic_close()));
+        filemanagewindow_pic->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_pic->show();
+        //filemanagewindow_pic->lower();
+        m_picture_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+    {
+        filemanagewindow_pic->hide();
+        delete filemanagewindow_pic;
+        filemanagewindow_pic = NULL;
+        m_picture_files->setStyleSheet("");
+    }
 }
 
 void LocalPanel::on_movie_files_clicked()
@@ -140,3 +175,18 @@ void LocalPanel::on_html_collect_clicked()
 
 }
 
+void LocalPanel::on_filemanagewindow_note_close()
+{
+    filemanagewindow_note->hide();
+    delete filemanagewindow_note;
+    filemanagewindow_note = NULL;
+    m_note_files->setStyleSheet("");
+}
+
+void LocalPanel::on_filemanagewindow_pic_close()
+{
+    filemanagewindow_pic->hide();
+    delete filemanagewindow_pic;
+    filemanagewindow_pic = NULL;
+    m_picture_files->setStyleSheet("");
+}

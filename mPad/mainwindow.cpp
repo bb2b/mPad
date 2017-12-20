@@ -14,18 +14,23 @@ MainWindow::MainWindow(QWidget *parent) :
     m_settingpanel_ctrl_btn->setText("隐藏");
     connect(m_settingpanel_ctrl_btn, SIGNAL(clicked()), this, SLOT(on_settingpanel_ctrl_btn_clicked()));
     m_settingpanel = new SettingPanel(this);
+    m_settingpanel->raise();
 
     m_localpanel_ctrl_btn = new QPushButton(this);
     m_localpanel_ctrl_btn->setText("隐藏");
     connect(m_localpanel_ctrl_btn, SIGNAL(clicked()), this, SLOT(on_localpanel_ctrl_btn_clicked()));
     m_localpanel = new LocalPanel(this);
-    m_localpanel_ctrl_btn->raise();
+    m_localpanel->raise();
+    m_localpanel->stackUnder(m_localpanel_ctrl_btn);
+    //m_localpanel_ctrl_btn->raise();
 
     m_usbpanel_ctrl_btn = new QPushButton(this);
     m_usbpanel_ctrl_btn->setText("隐藏");
     connect(m_usbpanel_ctrl_btn, SIGNAL(clicked()), this, SLOT(on_usbpanel_ctrl_btn_clicked()));
     m_usbpanel = new UsbPanel(this);
-    m_usbpanel_ctrl_btn->raise();
+    m_usbpanel->raise();
+    m_usbpanel->stackUnder(m_usbpanel_ctrl_btn);
+    //m_usbpanel_ctrl_btn->raise();
 
     connect(&settingpanel_timer, SIGNAL(timeout()), this, SLOT(on_settingpanel_timeout()));
     connect(&localpanel_timer, SIGNAL(timeout()), this, SLOT(on_localpanel_timeout()));

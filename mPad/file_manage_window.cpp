@@ -3,11 +3,15 @@
 #include <QStringList>
 #include <QGridLayout>
 #include <QObjectList>
+#include "global.h"
 
-FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWidget *parent) : QWidget(parent),
+int FileManageWindow::instance_number = 0;
+
+FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *parent) : QDialog(parent),
     m_vlayout(NULL),
     m_files_area(NULL)
 {
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     this->setAttribute(Qt::WA_DeleteOnClose);
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
     original_directory = directory;
@@ -63,6 +67,8 @@ FileManageWindow::FileManageWindow(FilterType filtertype, QString directory, QWi
     m_scrollarea->setAlignment(Qt::AlignCenter);
 
     init_files_area();
+
+    if(filtertype == ALL) instance_number++;
 }
 
 FileManageWindow::~FileManageWindow()
@@ -362,7 +368,7 @@ void FileManageWindow::on_return_button_clicked()
 
     if(current_dir->cdUp())
     {
-        current_directory = current_dir->path().replace("/", "\\");
+        current_directory = current_dir->path();
         m_directory_label->setText(current_directory);
         init_files_area();
         QResizeEvent event(QSize(this->width(), this->height()), QSize(this->width(), this->height()));
@@ -377,7 +383,13 @@ void FileManageWindow::on_manage_button_clicked()
 
 void FileManageWindow::on_close_button_clicked()
 {
-    this->close();
+    if(g_filtertype == ALL)
+    {
+        instance_number--;
+        this->close();
+    }
+    else
+        emit myclose();
 }
 
 void FileManageWindow::on_folder_clicked()
@@ -385,7 +397,7 @@ void FileManageWindow::on_folder_clicked()
     File *file = qobject_cast<File *>(sender());
     if(current_dir->cd(file->fileName))
     {
-        current_directory = current_directory + "\\" + file->fileName;
+        current_directory = current_directory + "/" + file->fileName;
         m_directory_label->setText(current_directory);
         init_files_area();
         QResizeEvent event(QSize(this->width(), this->height()), QSize(this->width(), this->height()));

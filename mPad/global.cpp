@@ -25,3 +25,20 @@ QString generate_name_by_current_time()
     QDateTime time = QDateTime::currentDateTime();
     return "\\" + time.toString("yyyyMMddhhmmss") + ".jpg";
 }
+
+QString generate_folder_on_desktop()
+{
+    QString path = QStandardPaths::standardLocations(QStandardPaths::DesktopLocation)[0] + "/Meeting";
+    QString path_note = path + "/Note";
+    QString path_photo = path + "/Photo";
+    QDir dir(path);
+    if(!dir.exists())   //如果路径不存在，则创建
+        dir.mkpath(path);
+    dir.setPath(path_note);
+    if(!dir.exists())
+        dir.mkpath(path_note);
+    dir.setPath(path_photo);
+    if(!dir.exists())
+        dir.mkpath(path_note);
+    return path;
+}

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include "mylabel.h"
+#include "file_manage_window.h"
 
 class LocalPanel : public QWidget
 {
@@ -26,6 +27,8 @@ public slots:
     void on_movie_files_clicked();
     void on_other_files_clicked();
     void on_html_collect_clicked();
+    void on_filemanagewindow_note_close();
+    void on_filemanagewindow_pic_close();
 
 private:
     myLabel *m_all_files;
@@ -40,6 +43,8 @@ private:
     myLabel *m_html_collect;
     myLabel *m_empty_area;
     QHBoxLayout *m_layout;
+    FileManageWindow *filemanagewindow_note;
+    FileManageWindow *filemanagewindow_pic;
 };
 
 #endif // LOCALPANEL_H

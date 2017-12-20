@@ -12,17 +12,22 @@
 #include <QHBoxLayout>
 #include <QDir>
 #include "file.h"
-#include "global.h"
 
-class FileManageWindow : public QWidget
+class FileManageWindow : public QDialog
 {
     Q_OBJECT
 public:
-    explicit FileManageWindow(FilterType filtertype, QString directory, QWidget *parent = 0);
+    explicit FileManageWindow(int filtertype, QString directory, QWidget *parent = 0);
     ~FileManageWindow();
 
 public:
+    static int instance_number;
+
+public:
     void init_files_area();
+
+signals:
+    void myclose();
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -39,7 +44,7 @@ public slots:
 private:
     QString original_directory;
     QString current_directory;
-    FilterType g_filtertype;
+    int g_filtertype;
     QLabel *m_directory_label;
     QPushButton *m_return_button;
     QPushButton *m_manage_button;
