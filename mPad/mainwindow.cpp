@@ -5,7 +5,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent),
     b_settingpanel_visible(true),
     b_localpanel_visible(true),
-    b_usbpanel_visible(true)
+    b_usbpanel_visible(true),
+    m_usbpanel_ctrl_btn(NULL),
+    m_usbpanel(NULL)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
     this->setStyleSheet("background-color: rgb(255, 170, 127);");
@@ -24,17 +26,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localpanel->stackUnder(m_localpanel_ctrl_btn);
     //m_localpanel_ctrl_btn->raise();
 
-    m_usbpanel_ctrl_btn = new QPushButton(this);
-    m_usbpanel_ctrl_btn->setText("隐藏");
-    connect(m_usbpanel_ctrl_btn, SIGNAL(clicked()), this, SLOT(on_usbpanel_ctrl_btn_clicked()));
-    m_usbpanel = new UsbPanel(this);
-    m_usbpanel->raise();
-    m_usbpanel->stackUnder(m_usbpanel_ctrl_btn);
-    //m_usbpanel_ctrl_btn->raise();
-
     connect(&settingpanel_timer, SIGNAL(timeout()), this, SLOT(on_settingpanel_timeout()));
     connect(&localpanel_timer, SIGNAL(timeout()), this, SLOT(on_localpanel_timeout()));
     connect(&usbpanel_timer, SIGNAL(timeout()), this, SLOT(on_usbpanel_timeout()));
+
+    connect(g_udiskdetect, SIGNAL(sigUDiskCome(QString)), this, SLOT(on_usb_detected(QString)));
+    connect(g_udiskdetect, SIGNAL(sigUDiskRemove()), this, SLOT(on_usb_removed()));
 }
 
 MainWindow::~MainWindow()
@@ -58,9 +55,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
         m_localpanel->resizeAll();
         m_localpanel->setGeometry(0, GetSystemMetrics(SM_CYSCREEN) - 70, GetSystemMetrics(SM_CXSCREEN), 70);
         m_localpanel_ctrl_btn->setGeometry(GetSystemMetrics(SM_CXSCREEN) * 21 / 22 - 20, GetSystemMetrics(SM_CYSCREEN) - 55, 40, 40);
-        m_usbpanel->resizeAll();
-        m_usbpanel->setGeometry(0, 0, GetSystemMetrics(SM_CXSCREEN), 70);
-        m_usbpanel_ctrl_btn->setGeometry(GetSystemMetrics(SM_CXSCREEN) * 19 / 20 - 20, 15, 40, 40);
     }
 }
 
@@ -156,5 +150,36 @@ void MainWindow::on_usbpanel_timeout()
             b_usbpanel_visible = true;
             usbpanel_timer.stop();
         }
+    }
+}
+
+void MainWindow::on_usb_detected(QString UsbName)
+{
+    if(m_usbpanel == NULL && m_usbpanel_ctrl_btn == NULL)
+    {
+        m_usbpanel_ctrl_btn = new QPushButton(this);
+        m_usbpanel_ctrl_btn->setText("隐藏");
+        connect(m_usbpanel_ctrl_btn, SIGNAL(clicked()), this, SLOT(on_usbpanel_ctrl_btn_clicked()));
+        m_usbpanel = new UsbPanel(UsbName, this);
+        m_usbpanel->raise();
+        m_usbpanel->stackUnder(m_usbpanel_ctrl_btn);
+        m_usbpanel->show();
+        m_usbpanel_ctrl_btn->show();
+        m_usbpanel->resizeAll();
+        m_usbpanel->setGeometry(0, 0, GetSystemMetrics(SM_CXSCREEN), 70);
+        m_usbpanel_ctrl_btn->setGeometry(GetSystemMetrics(SM_CXSCREEN) * 19 / 20 - 20, 15, 40, 40);
+    }
+}
+
+void MainWindow::on_usb_removed()
+{
+    if(m_usbpanel != NULL && m_usbpanel_ctrl_btn != NULL)
+    {
+        m_usbpanel->hide();
+        m_usbpanel_ctrl_btn->hide();
+        delete m_usbpanel;
+        delete m_usbpanel_ctrl_btn;
+        m_usbpanel = NULL;
+        m_usbpanel_ctrl_btn = NULL;
     }
 }

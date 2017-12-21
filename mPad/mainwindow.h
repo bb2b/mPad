@@ -27,6 +27,8 @@ public slots:
     void on_settingpanel_timeout();
     void on_localpanel_timeout();
     void on_usbpanel_timeout();
+    void on_usb_detected(QString UsbName);
+    void on_usb_removed();
 
 private:
     QPushButton *m_settingpanel_ctrl_btn;

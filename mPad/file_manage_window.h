@@ -21,9 +21,6 @@ public:
     ~FileManageWindow();
 
 public:
-    static int instance_number;
-
-public:
     void init_files_area();
 
 signals:

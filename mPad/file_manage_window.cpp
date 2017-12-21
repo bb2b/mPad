@@ -5,14 +5,12 @@
 #include <QObjectList>
 #include "global.h"
 
-int FileManageWindow::instance_number = 0;
-
 FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *parent) : QDialog(parent),
     m_vlayout(NULL),
     m_files_area(NULL)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
-    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setAttribute(Qt::WA_DeleteOnClose);
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
     original_directory = directory;
     current_directory = directory;
@@ -67,8 +65,6 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     m_scrollarea->setAlignment(Qt::AlignCenter);
 
     init_files_area();
-
-    if(filtertype == ALL) instance_number++;
 }
 
 FileManageWindow::~FileManageWindow()
@@ -383,13 +379,7 @@ void FileManageWindow::on_manage_button_clicked()
 
 void FileManageWindow::on_close_button_clicked()
 {
-    if(g_filtertype == ALL)
-    {
-        instance_number--;
-        this->close();
-    }
-    else
-        emit myclose();
+    emit myclose();
 }
 
 void FileManageWindow::on_folder_clicked()

@@ -1,7 +1,11 @@
 ﻿#include "usbpanel.h"
 #include "global.h"
 
-UsbPanel::UsbPanel(QWidget *parent) : QWidget(parent)
+UsbPanel::UsbPanel(QString UsbName, QWidget *parent) : QWidget(parent),
+    m_usbname(UsbName),
+    filemanagewindow_all(NULL),
+    filemanagewindow_note(NULL),
+    filemanagewindow_pic(NULL)
 {
     this->setStyleSheet("background-color:rgb(188,188,188);");
 
@@ -81,14 +85,45 @@ void UsbPanel::resizeAll()
     m_empty_area->setFixedSize(average_width, 70);
 }
 
+QString UsbPanel::generate_note_folder()
+{
+    QString path_note = m_usbname + ":/Note";
+    QDir dir(path_note);
+    if(!dir.exists())
+        dir.mkpath(path_note);
+    return path_note;
+}
+
 void UsbPanel::on_usb_all_clicked()
 {
-
+    if(filemanagewindow_all == NULL)
+    {
+        filemanagewindow_all = new FileManageWindow(ALL, m_usbname + ":", this->parentWidget());
+        connect(filemanagewindow_all, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_all_close()));
+        filemanagewindow_all->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_all->show();
+        //filemanagewindow->lower();
+    }
 }
 
 void UsbPanel::on_note_files_clicked()
 {
-
+    if(filemanagewindow_note == NULL)
+    {
+        filemanagewindow_note = new FileManageWindow(NOTE, generate_note_folder(), this->parentWidget());
+        connect(filemanagewindow_note, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_note_close()));
+        filemanagewindow_note->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_note->show();
+        //filemanagewindow_note->lower();
+        m_note_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+    {
+        filemanagewindow_note->hide();
+        delete filemanagewindow_note;
+        filemanagewindow_note = NULL;
+        m_note_files->setStyleSheet("");
+    }
 }
 
 void UsbPanel::on_ppt_files_clicked()
@@ -113,7 +148,22 @@ void UsbPanel::on_pdf_files_clicked()
 
 void UsbPanel::on_picture_files_clicked()
 {
-
+    if(filemanagewindow_pic == NULL)
+    {
+        filemanagewindow_pic = new FileManageWindow(PICTURES, m_usbname + ":", this->parentWidget());
+        connect(filemanagewindow_pic, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_pic_close()));
+        filemanagewindow_pic->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_pic->show();
+        //filemanagewindow_pic->lower();
+        m_picture_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+    {
+        filemanagewindow_pic->hide();
+        delete filemanagewindow_pic;
+        filemanagewindow_pic = NULL;
+        m_picture_files->setStyleSheet("");
+    }
 }
 
 void UsbPanel::on_movie_files_clicked()
@@ -124,4 +174,27 @@ void UsbPanel::on_movie_files_clicked()
 void UsbPanel::on_other_files_clicked()
 {
 
+}
+
+void UsbPanel::on_filemanagewindow_all_close()
+{
+    filemanagewindow_all->hide();
+    delete filemanagewindow_all;
+    filemanagewindow_all = NULL;
+}
+
+void UsbPanel::on_filemanagewindow_note_close()
+{
+    filemanagewindow_note->hide();
+    delete filemanagewindow_note;
+    filemanagewindow_note = NULL;
+    m_note_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagewindow_pic_close()
+{
+    filemanagewindow_pic->hide();
+    delete filemanagewindow_pic;
+    filemanagewindow_pic = NULL;
+    m_picture_files->setStyleSheet("");
 }

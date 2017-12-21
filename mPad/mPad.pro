@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     usbpanel.cpp \
     file_manage_window.cpp \
     file_manage_popup.cpp \
-    file.cpp
+    file.cpp \
+    udiskdetect.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -41,7 +42,8 @@ HEADERS  += mainwindow.h \
     usbpanel.h \
     file_manage_window.h \
     file_manage_popup.h \
-    file.h
+    file.h \
+    udiskdetect.h
 
 FORMS    +=
 

@@ -27,6 +27,7 @@ public slots:
     void on_movie_files_clicked();
     void on_other_files_clicked();
     void on_html_collect_clicked();
+    void on_filemanagewindow_all_close();
     void on_filemanagewindow_note_close();
     void on_filemanagewindow_pic_close();
 
@@ -43,6 +44,7 @@ private:
     myLabel *m_html_collect;
     myLabel *m_empty_area;
     QHBoxLayout *m_layout;
+    FileManageWindow *filemanagewindow_all;
     FileManageWindow *filemanagewindow_note;
     FileManageWindow *filemanagewindow_pic;
 };

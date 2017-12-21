@@ -6,6 +6,7 @@ SwitchBoard *g_switchboard = NULL;
 WhiteBoard *g_whiteboard = NULL;
 MainWindow *g_mainwindow = NULL;
 ScreenShot *g_screenshot = NULL;
+UdiskDetect *g_udiskdetect = NULL;
 int g_draw_width = 2;
 QColor g_draw_color = QColor(255,0,0);
 int g_draw_type = DRAW;
@@ -13,6 +14,9 @@ int g_draw_type = DRAW;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    g_udiskdetect = new UdiskDetect;
+    a.installNativeEventFilter(g_udiskdetect);
 
     g_notebar = new NoteBar;
     g_notebar->show();

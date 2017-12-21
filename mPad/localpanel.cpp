@@ -2,6 +2,7 @@
 #include "global.h"
 
 LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent),
+    filemanagewindow_all(NULL),
     filemanagewindow_note(NULL),
     filemanagewindow_pic(NULL)
 {
@@ -91,11 +92,12 @@ void LocalPanel::resizeAll()
 
 void LocalPanel::on_all_files_clicked()
 {
-    if(FileManageWindow::instance_number == 0)
+    if(filemanagewindow_all == NULL)
     {
-        FileManageWindow *filemanagewindow = new FileManageWindow(ALL, generate_folder_on_desktop(), this->parentWidget());
-        filemanagewindow->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
-        filemanagewindow->show();
+        filemanagewindow_all = new FileManageWindow(ALL, generate_folder_on_desktop(), this->parentWidget());
+        connect(filemanagewindow_all, SIGNAL(myclose()), this, SLOT(on_filemanagewindow_all_close()));
+        filemanagewindow_all->setGeometry(GetSystemMetrics(SM_CXSCREEN) / 4, GetSystemMetrics(SM_CYSCREEN) / 4, GetSystemMetrics(SM_CXSCREEN) / 2, GetSystemMetrics(SM_CYSCREEN) / 2);
+        filemanagewindow_all->show();
         //filemanagewindow->lower();
     }
 }
@@ -173,6 +175,13 @@ void LocalPanel::on_other_files_clicked()
 void LocalPanel::on_html_collect_clicked()
 {
 
+}
+
+void LocalPanel::on_filemanagewindow_all_close()
+{
+    filemanagewindow_all->hide();
+    delete filemanagewindow_all;
+    filemanagewindow_all = NULL;
 }
 
 void LocalPanel::on_filemanagewindow_note_close()

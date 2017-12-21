@@ -17,6 +17,7 @@
 #include "whiteboard.h"
 #include "mainwindow.h"
 #include "screenshot.h"
+#include "udiskdetect.h"
 
 // 是否打印调试信息
 #define SUPPORT_DBG         1
@@ -55,6 +56,7 @@ extern SwitchBoard *g_switchboard;
 extern WhiteBoard *g_whiteboard;
 extern MainWindow *g_mainwindow;
 extern ScreenShot *g_screenshot;
+extern UdiskDetect *g_udiskdetect;
 extern int g_draw_width;
 extern QColor g_draw_color;
 extern int g_draw_type;

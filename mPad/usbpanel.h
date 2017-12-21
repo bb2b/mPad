@@ -4,16 +4,21 @@
 #include <QWidget>
 #include <QHBoxLayout>
 #include "mylabel.h"
+#include "file_manage_window.h"
 
 class UsbPanel : public QWidget
 {
     Q_OBJECT
 public:
-    explicit UsbPanel(QWidget *parent = 0);
+    explicit UsbPanel(QString UsbName, QWidget *parent = 0);
     ~UsbPanel();
 
 public:
     void resizeAll();
+    QString generate_note_folder();
+
+public:
+    QString m_usbname;
 
 public slots:
     void on_usb_all_clicked();
@@ -25,6 +30,9 @@ public slots:
     void on_picture_files_clicked();
     void on_movie_files_clicked();
     void on_other_files_clicked();
+    void on_filemanagewindow_all_close();
+    void on_filemanagewindow_note_close();
+    void on_filemanagewindow_pic_close();
 
 private:
     myLabel *m_usb_all;
@@ -38,6 +46,9 @@ private:
     myLabel *m_other_files;
     myLabel *m_empty_area;
     QHBoxLayout *m_layout;
+    FileManageWindow *filemanagewindow_all;
+    FileManageWindow *filemanagewindow_note;
+    FileManageWindow *filemanagewindow_pic;
 };
 
 #endif // USBPANEL_H
