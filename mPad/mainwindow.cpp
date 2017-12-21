@@ -26,6 +26,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localpanel->stackUnder(m_localpanel_ctrl_btn);
     //m_localpanel_ctrl_btn->raise();
 
+    QString udisk = find_udisk();
+    if(udisk != "")
+        on_usb_detected(udisk);
+
     connect(&settingpanel_timer, SIGNAL(timeout()), this, SLOT(on_settingpanel_timeout()));
     connect(&localpanel_timer, SIGNAL(timeout()), this, SLOT(on_localpanel_timeout()));
     connect(&usbpanel_timer, SIGNAL(timeout()), this, SLOT(on_usbpanel_timeout()));
@@ -40,6 +44,21 @@ MainWindow::~MainWindow()
     delete m_settingpanel;
     delete m_localpanel_ctrl_btn;
     delete m_localpanel;
+    if(m_usbpanel_ctrl_btn != NULL) delete m_usbpanel_ctrl_btn;
+    if(m_usbpanel != NULL) delete m_usbpanel;
+}
+
+QString MainWindow::find_udisk()
+{
+    QFileInfoList disks = QDir::drives();
+    for(int i = 0; i < disks.size(); i++)
+    {
+        QString disk = disks[i].filePath().replace("/", "\\");
+        UINT type = GetDriveTypeA(disk.toStdString().c_str());
+        if(DRIVE_REMOVABLE == type)
+            return QString(disk.at(0));
+    }
+    return "";
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)

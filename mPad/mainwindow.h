@@ -17,6 +17,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public:
+    QString find_udisk();
+
 protected:
     void paintEvent(QPaintEvent* event);
 
