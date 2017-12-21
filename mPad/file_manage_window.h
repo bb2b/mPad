@@ -4,7 +4,6 @@
 #include <QDialog>
 #include <QMouseEvent>
 #include <QResizeEvent>
-#include <QVector>
 #include <QLabel>
 #include <QPushButton>
 #include <QScrollArea>

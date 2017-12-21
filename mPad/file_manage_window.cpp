@@ -7,14 +7,14 @@
 
 FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *parent) : QDialog(parent),
     m_vlayout(NULL),
-    m_files_area(NULL)
+    m_files_area(NULL),
+    original_directory(directory),
+    current_directory(directory),
+    g_filtertype(filtertype)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     //this->setAttribute(Qt::WA_DeleteOnClose);
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
-    original_directory = directory;
-    current_directory = directory;
-    g_filtertype = filtertype;
 
     m_title_area = new QWidget(this);
     m_title_area->setStyleSheet("QWidget{background-color:gray;}");
