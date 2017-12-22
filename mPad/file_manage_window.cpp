@@ -102,7 +102,7 @@ void FileManageWindow::init_files_area()
     if(current_dir->exists())
     {
         //列出“文件夹”,除了批注文件 窗口，其他窗口都要列出文件夹
-        QStringList dirs_list = current_dir->entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs);
+        QFileInfoList dirs_list = current_dir->entryInfoList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs);
         if(dirs_list.size() > 0 && g_filtertype != NOTE)
         {
             QGroupBox *groupbox = new QGroupBox();
@@ -130,7 +130,7 @@ void FileManageWindow::init_files_area()
             int v = 0;
             for(int i = 0; i < dirs_list.size(); i++)
             {
-                File *file = new File(true, current_directory, dirs_list.at(i));
+                File *file = new File(true, dirs_list.at(i));
                 connect(file, SIGNAL(clicked()), this, SLOT(on_folder_clicked()));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
@@ -145,7 +145,7 @@ void FileManageWindow::init_files_area()
             m_vlayout->addWidget(groupbox);
         }
         //列出“文档”,只有会议收藏窗口需要列出文档
-        QStringList files_list = current_dir->entryList(QStringList() << "*.pdf" << "*.docx" << "*.doc" << "*.xlsx" << "*.xls" << "*.pptx" << "*.ppt");
+        QFileInfoList files_list = current_dir->entryInfoList(QStringList() << "*.pdf" << "*.docx" << "*.doc" << "*.xlsx" << "*.xls" << "*.pptx" << "*.ppt");
         if(files_list.size() > 0 && g_filtertype == ALL)
         {
             QGroupBox *groupbox = new QGroupBox();
@@ -173,7 +173,7 @@ void FileManageWindow::init_files_area()
             int v = 0;
             for(int i = 0; i < files_list.size(); i++)
             {
-                File *file = new File(true, current_directory, files_list.at(i));
+                File *file = new File(true, files_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -187,7 +187,7 @@ void FileManageWindow::init_files_area()
             m_vlayout->addWidget(groupbox);
         }
         //列出“图片”
-        QStringList pics_list = current_dir->entryList(QStringList() << "*.bmp" << "*.dib" << "*.gif" << "*.jfif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png" << "*.tif" << "*.tiff" << "*.wdp");
+        QFileInfoList pics_list = current_dir->entryInfoList(QStringList() << "*.bmp" << "*.dib" << "*.gif" << "*.jfif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png" << "*.tif" << "*.tiff" << "*.wdp");
         if(pics_list.size() > 0)
         {
             QGroupBox *groupbox = new QGroupBox();
@@ -215,7 +215,7 @@ void FileManageWindow::init_files_area()
             int v = 0;
             for(int i = 0; i < pics_list.size(); i++)
             {
-                File *file = new File(true, current_directory, pics_list.at(i));
+                File *file = new File(true, pics_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -229,7 +229,7 @@ void FileManageWindow::init_files_area()
             m_vlayout->addWidget(groupbox);
         }
         //列出“视频”,只有会议收藏窗口需要列出视频
-        QStringList movies_list = current_dir->entryList(QStringList() << "*.mp4" << "*.avi" << "*.mov" << "*.wmv");
+        QFileInfoList movies_list = current_dir->entryInfoList(QStringList() << "*.mp4" << "*.avi" << "*.mov" << "*.wmv");
         if(movies_list.size() > 0 && g_filtertype == ALL)
         {
             QGroupBox *groupbox = new QGroupBox();
@@ -257,7 +257,7 @@ void FileManageWindow::init_files_area()
             int v = 0;
             for(int i = 0; i < movies_list.size(); i++)
             {
-                File *file = new File(true, current_directory, movies_list.at(i));
+                File *file = new File(true, movies_list.at(i));
                 gridlayout->addWidget(file, h, v);
                 if(v >= 7)
                 {
@@ -273,7 +273,7 @@ void FileManageWindow::init_files_area()
         //列出“其他”
         if(g_filtertype == ALL)
         {
-            QStringList all_list = current_dir->entryList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs | QDir::Files);
+            QFileInfoList all_list = current_dir->entryInfoList(QDir::NoDotAndDotDot | QDir::Hidden | QDir::Dirs | QDir::Files);
             if(all_list.size() > 0)
             {
                 if(dirs_list.size() > 0)
@@ -331,7 +331,7 @@ void FileManageWindow::init_files_area()
                     int v = 0;
                     for(int i = 0; i < all_list.size(); i++)
                     {
-                        File *file = new File(true, current_directory, all_list.at(i));
+                        File *file = new File(true, all_list.at(i));
                         gridlayout->addWidget(file, h, v);
                         if(v >= 7)
                         {
@@ -385,9 +385,9 @@ void FileManageWindow::on_close_button_clicked()
 void FileManageWindow::on_folder_clicked()
 {
     File *file = qobject_cast<File *>(sender());
-    if(current_dir->cd(file->fileName))
+    if(current_dir->cd(file->m_fileinfo.fileName()))
     {
-        current_directory = current_directory + "/" + file->fileName;
+        current_directory = current_directory + "/" + file->m_fileinfo.fileName();
         m_directory_label->setText(current_directory);
         init_files_area();
         QResizeEvent event(QSize(this->width(), this->height()), QSize(this->width(), this->height()));

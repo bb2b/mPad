@@ -3,31 +3,29 @@
 #include "file.h"
 #include "global.h"
 
-File::File(bool islarge, QString filepath, QString filename, QWidget *parent) : QLabel(parent)
+File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabel(parent),
+    b_on_window_or_pupup(on_window_or_pupup),
+    m_fileinfo(fileinfo)
 {
     setCursor(Qt::PointingHandCursor);
-
-    isLargeDisplay = islarge;
-    filePath = filepath;
-    fileName = filename;
 
     m_icon = new QLabel(this);
     m_icon->setScaledContents(true);
 
-    if(isLargeDisplay)
+    if(b_on_window_or_pupup)
     {
         m_large_file_name = new QLabel(this);
         m_large_file_name->setAlignment(Qt::AlignCenter);
-        m_large_file_name->setText(filename);
+        m_large_file_name->setText(m_fileinfo.fileName());
     }
     else
     {
         m_tiny_bg = new QLabel(this);
         m_tiny_file_name = new QLabel(m_tiny_bg);
-        m_tiny_file_name->setText(filename);
+        m_tiny_file_name->setText(m_fileinfo.fileName());
         QString file_description = "";
         SHFILEINFOA info;
-        if(SHGetFileInfoA(QString(filePath + "\\" + fileName).toStdString().c_str(),
+        if(SHGetFileInfoA(fileinfo.absoluteFilePath().toStdString().c_str(),
          FILE_ATTRIBUTE_NORMAL,
          &info,
          sizeof(info),
@@ -38,15 +36,14 @@ File::File(bool islarge, QString filepath, QString filename, QWidget *parent) : 
         }
         m_tiny_file_description = new QLabel(m_tiny_bg);
         m_tiny_file_description->setText(file_description);
-        QFileInfo fileinfo(filePath + "\\" + fileName);
         m_tiny_file_size = new QLabel(m_tiny_bg);
-        m_tiny_file_size->setText(QString::number(fileinfo.size()) + "KB");
+        m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "KB");
     }
 }
 
 File::~File()
 {
-    if(isLargeDisplay)
+    if(b_on_window_or_pupup)
     {
         delete m_large_file_name;
     }
@@ -85,13 +82,13 @@ void File::resizeEvent(QResizeEvent *event)
     {
         //this->setStyleSheet("QLabel{border-left-width: 40px; border-right-width: 40px; border-top-width: 5px; border-bottom-width: 40px; border-style: solid; border-color: transparent;}");
         m_icon->setGeometry(0, 0, w, h - 40);
-        m_icon->setPixmap(fileIcon(filePath + "\\" + fileName).pixmap(w, h));
+        m_icon->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
         m_large_file_name->setGeometry(0, h - 40, w, 40);
     }
     else
     {
         this->setStyleSheet("QLabel{border-left-width: 5px; border-right-width: 50px; border-top-width: 5px; border-bottom-width: 5px; border-style: solid; border-color: transparent;}");
-        this->setPixmap(fileIcon(filePath + "\\" + fileName).pixmap(w, h));
+        this->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
         m_tiny_bg->setGeometry(w - 50, 0, 50, h);
         m_tiny_file_name->setGeometry(0, 0, m_tiny_bg->width(), m_tiny_bg->height() / 2);
         m_tiny_file_description->setGeometry(0, m_tiny_bg->height() / 2, m_tiny_bg->width(), m_tiny_bg->height() / 4);

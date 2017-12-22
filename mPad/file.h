@@ -5,12 +5,13 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QIcon>
+#include <QFileInfo>
 
 class File : public QLabel
 {
     Q_OBJECT
 public:
-    explicit File(bool islarge, QString filepath, QString filename, QWidget *parent = 0);
+    explicit File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent = 0);
     ~File();
 
 public:
@@ -21,14 +22,13 @@ protected:
     void resizeEvent(QResizeEvent *event);
 
 public:
-    QString filePath;
-    QString fileName;
+    QFileInfo m_fileinfo;
 
 signals:
     void clicked();
 
 private:
-    bool isLargeDisplay;
+    bool b_on_window_or_pupup;
     QLabel *m_icon;
     QLabel *m_large_file_name;
     QLabel *m_tiny_bg;

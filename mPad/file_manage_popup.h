@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QDir>
+#include <QList>
 #include "file.h"
 
 class FileManagePopup : public QWidget
@@ -16,6 +17,11 @@ class FileManagePopup : public QWidget
 public:
     explicit FileManagePopup(int filtertype, QString directory, bool onBottom, bool newHtml = false, QWidget *parent = 0);
     ~FileManagePopup();
+
+public:
+    QFileInfoList get_file_list(QString path, QStringList filters);
+    QList<QFileInfoList> sort_by_createdtime(QFileInfoList filelist);
+    bool compareCreateTime(const QFileInfo &fileinfo1, const QFileInfo &fileinfo2);
 
 signals:
     void myclose();

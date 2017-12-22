@@ -86,3 +86,42 @@ FileManagePopup::~FileManagePopup()
     delete m_hlayout;
     delete m_title_area;
 }
+
+QFileInfoList FileManagePopup::get_file_list(QString path, QStringList filters)
+{
+    QDir dir(path);
+    QFileInfoList file_list = dir.entryInfoList(filters);
+    QFileInfoList folder_list = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+
+    for(int i = 0; i != folder_list.size(); i++)
+    {
+         QString name = folder_list.at(i).absoluteFilePath();
+         QFileInfoList child_file_list = get_file_list(name, filters);
+         file_list.append(child_file_list);
+    }
+
+    return file_list;
+}
+
+QList<QFileInfoList> FileManagePopup::sort_by_createdtime(QFileInfoList filelist)
+{
+    qSort(filelist.begin(), filelist.end(), compareCreateTime);
+    QFileInfoList infolist_temp;
+    QList<QFileInfoList> list_temp;
+    for(int i = 0; i < filelist.size(); i++)
+    {
+        if(i != 0 && filelist.at(i).created().date() > filelist.at(i - 1).created().date())
+        {
+            list_temp << infolist_temp;
+            infolist_temp.clear();
+        }
+        infolist_temp << filelist.at(i);
+    }
+    list_temp << infolist_temp;
+    return list_temp;
+}
+
+bool FileManagePopup::compareCreateTime(const QFileInfo &fileinfo1, const QFileInfo &fileinfo2)
+{
+    return fileinfo1.created() < fileinfo2.created();
+}
