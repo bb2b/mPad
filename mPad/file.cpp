@@ -32,12 +32,15 @@ File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabe
          SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES))
         {
             std::string type = info.szTypeName;
-            file_description = type.c_str();
+            file_description = QString::fromLocal8Bit(type.c_str());
         }
+        QFont font("宋体", 7, QFont::Normal);
         m_tiny_file_description = new QLabel(m_tiny_bg);
         m_tiny_file_description->setText(file_description);
+        m_tiny_file_description->setFont(font);
         m_tiny_file_size = new QLabel(m_tiny_bg);
         m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "KB");
+        m_tiny_file_size->setFont(font);
     }
 }
 
@@ -78,7 +81,7 @@ void File::resizeEvent(QResizeEvent *event)
 {
     int h = event->size().height();
     int w = event->size().width();
-    if(isLargeDisplay)
+    if(b_on_window_or_pupup)
     {
         //this->setStyleSheet("QLabel{border-left-width: 40px; border-right-width: 40px; border-top-width: 5px; border-bottom-width: 40px; border-style: solid; border-color: transparent;}");
         m_icon->setGeometry(0, 0, w, h - 40);
@@ -87,9 +90,11 @@ void File::resizeEvent(QResizeEvent *event)
     }
     else
     {
-        this->setStyleSheet("QLabel{border-left-width: 5px; border-right-width: 50px; border-top-width: 5px; border-bottom-width: 5px; border-style: solid; border-color: transparent;}");
-        this->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
-        m_tiny_bg->setGeometry(w - 50, 0, 50, h);
+        //this->setStyleSheet("QLabel{border-left-width: 5px; border-right-width: 50px; border-top-width: 5px; border-bottom-width: 5px; border-style: solid; border-color: transparent;}");
+        //this->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
+        m_icon->setGeometry(0, h / 2 - w / 12, w / 6, w / 6);
+        m_icon->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(m_icon->width(), m_icon->height()));
+        m_tiny_bg->setGeometry(w / 6, 0, w - w / 6, h);
         m_tiny_file_name->setGeometry(0, 0, m_tiny_bg->width(), m_tiny_bg->height() / 2);
         m_tiny_file_description->setGeometry(0, m_tiny_bg->height() / 2, m_tiny_bg->width(), m_tiny_bg->height() / 4);
         m_tiny_file_size->setGeometry(0, m_tiny_bg->height() * 3 / 4, m_tiny_bg->width(), m_tiny_bg->height() / 4);

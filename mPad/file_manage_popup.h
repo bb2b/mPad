@@ -20,8 +20,9 @@ public:
 
 public:
     QFileInfoList get_file_list(QString path, QStringList filters);
+    QFileInfoList get_file_list_no_filter(QString path);
     QList<QFileInfoList> sort_by_createdtime(QFileInfoList filelist);
-    bool compareCreateTime(const QFileInfo &fileinfo1, const QFileInfo &fileinfo2);
+    static bool compareCreateTime(const QFileInfo &fileinfo1, const QFileInfo &fileinfo2);
 
 signals:
     void myclose();

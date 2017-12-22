@@ -5,7 +5,13 @@ UsbPanel::UsbPanel(QString UsbName, QWidget *parent) : QWidget(parent),
     m_usbname(UsbName),
     filemanagewindow_all(NULL),
     filemanagewindow_note(NULL),
-    filemanagewindow_pic(NULL)
+    filemanagewindow_pic(NULL),
+    filemanagepopup_ppt(NULL),
+    filemanagepopup_word(NULL),
+    filemanagepopup_excel(NULL),
+    filemanagepopup_pdf(NULL),
+    filemanagepopup_movie(NULL),
+    filemanagepopup_other(NULL)
 {
     this->setStyleSheet("background-color:rgb(188,188,188);");
 
@@ -94,6 +100,52 @@ QString UsbPanel::generate_note_folder()
     return path_note;
 }
 
+void UsbPanel::delete_all_popup()
+{
+    if(filemanagepopup_ppt != NULL)
+    {
+        filemanagepopup_ppt->hide();
+        delete filemanagepopup_ppt;
+        filemanagepopup_ppt = NULL;
+        m_ppt_files->setStyleSheet("");
+    }
+    if(filemanagepopup_word != NULL)
+    {
+        filemanagepopup_word->hide();
+        delete filemanagepopup_word;
+        filemanagepopup_word = NULL;
+        m_word_files->setStyleSheet("");
+    }
+    if(filemanagepopup_excel != NULL)
+    {
+        filemanagepopup_excel->hide();
+        delete filemanagepopup_excel;
+        filemanagepopup_excel = NULL;
+        m_excel_files->setStyleSheet("");
+    }
+    if(filemanagepopup_pdf != NULL)
+    {
+        filemanagepopup_pdf->hide();
+        delete filemanagepopup_pdf;
+        filemanagepopup_pdf = NULL;
+        m_pdf_files->setStyleSheet("");
+    }
+    if(filemanagepopup_movie != NULL)
+    {
+        filemanagepopup_movie->hide();
+        delete filemanagepopup_movie;
+        filemanagepopup_movie = NULL;
+        m_movie_files->setStyleSheet("");
+    }
+    if(filemanagepopup_other != NULL)
+    {
+        filemanagepopup_other->hide();
+        delete filemanagepopup_other;
+        filemanagepopup_other = NULL;
+        m_other_files->setStyleSheet("");
+    }
+}
+
 void UsbPanel::on_usb_all_clicked()
 {
     if(filemanagewindow_all == NULL)
@@ -128,22 +180,62 @@ void UsbPanel::on_note_files_clicked()
 
 void UsbPanel::on_ppt_files_clicked()
 {
-
+    if(filemanagepopup_ppt == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_ppt = new FileManagePopup(OFFICEPPT, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_ppt, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_ppt_close()));
+        filemanagepopup_ppt->setGeometry(this->pos().x() + m_ppt_files->pos().x(), this->height(), m_ppt_files->width(), m_ppt_files->height() * 6);
+        filemanagepopup_ppt->show();
+        m_ppt_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_word_files_clicked()
 {
-
+    if(filemanagepopup_word == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_word = new FileManagePopup(OFFICEWORD, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_word, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_word_close()));
+        filemanagepopup_word->setGeometry(this->pos().x() + m_word_files->pos().x(), this->height(), m_word_files->width(), m_word_files->height() * 6);
+        filemanagepopup_word->show();
+        m_word_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_excel_files_clicked()
 {
-
+    if(filemanagepopup_excel == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_excel = new FileManagePopup(OFFICEEXCEL, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_excel, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_excel_close()));
+        filemanagepopup_excel->setGeometry(this->pos().x() + m_excel_files->pos().x(), this->height(), m_excel_files->width(), m_excel_files->height() * 6);
+        filemanagepopup_excel->show();
+        m_excel_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_pdf_files_clicked()
 {
-
+    if(filemanagepopup_pdf == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_pdf = new FileManagePopup(PDF, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_pdf, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_pdf_close()));
+        filemanagepopup_pdf->setGeometry(this->pos().x() + m_pdf_files->pos().x(), this->height(), m_pdf_files->width(), m_pdf_files->height() * 6);
+        filemanagepopup_pdf->show();
+        m_pdf_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_picture_files_clicked()
@@ -168,12 +260,32 @@ void UsbPanel::on_picture_files_clicked()
 
 void UsbPanel::on_movie_files_clicked()
 {
-
+    if(filemanagepopup_movie == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_movie = new FileManagePopup(MOVIE, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_movie, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_movie_close()));
+        filemanagepopup_movie->setGeometry(this->pos().x() + m_movie_files->pos().x(), this->height(), m_movie_files->width(), m_movie_files->height() * 6);
+        filemanagepopup_movie->show();
+        m_movie_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_other_files_clicked()
 {
-
+    if(filemanagepopup_other == NULL)
+    {
+        delete_all_popup();
+        filemanagepopup_other = new FileManagePopup(OTHER, m_usbname + ":", false, false, this->parentWidget());
+        connect(filemanagepopup_other, SIGNAL(myclose()), this, SLOT(on_filemanagepopup_other_close()));
+        filemanagepopup_other->setGeometry(this->pos().x() + m_other_files->pos().x(), this->height(), m_other_files->width(), m_other_files->height() * 6);
+        filemanagepopup_other->show();
+        m_other_files->setStyleSheet("background-color: rgb(0, 170, 255);");
+    }
+    else
+        delete_all_popup();
 }
 
 void UsbPanel::on_filemanagewindow_all_close()
@@ -197,4 +309,52 @@ void UsbPanel::on_filemanagewindow_pic_close()
     delete filemanagewindow_pic;
     filemanagewindow_pic = NULL;
     m_picture_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_ppt_close()
+{
+    filemanagepopup_ppt->hide();
+    delete filemanagepopup_ppt;
+    filemanagepopup_ppt = NULL;
+    m_ppt_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_word_close()
+{
+    filemanagepopup_word->hide();
+    delete filemanagepopup_word;
+    filemanagepopup_word = NULL;
+    m_word_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_excel_close()
+{
+    filemanagepopup_excel->hide();
+    delete filemanagepopup_excel;
+    filemanagepopup_excel = NULL;
+    m_excel_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_pdf_close()
+{
+    filemanagepopup_pdf->hide();
+    delete filemanagepopup_pdf;
+    filemanagepopup_pdf = NULL;
+    m_pdf_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_movie_close()
+{
+    filemanagepopup_movie->hide();
+    delete filemanagepopup_movie;
+    filemanagepopup_movie = NULL;
+    m_movie_files->setStyleSheet("");
+}
+
+void UsbPanel::on_filemanagepopup_other_close()
+{
+    filemanagepopup_other->hide();
+    delete filemanagepopup_other;
+    filemanagepopup_other = NULL;
+    m_other_files->setStyleSheet("");
 }

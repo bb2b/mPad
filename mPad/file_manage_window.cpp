@@ -17,7 +17,7 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     //this->setStyleSheet("QDialog{border-width:2px;border-color:black;border-style:solid;}");
 
     m_title_area = new QWidget(this);
-    m_title_area->setStyleSheet("QWidget{background-color:gray;}");
+    m_title_area->setStyleSheet("QWidget{background-color:rgb(53,162,213);}");
     m_hlayout = new QHBoxLayout();
     m_hlayout->setContentsMargins(0,0,0,0);
     m_hlayout->setSpacing(0);
@@ -39,7 +39,7 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     m_title_area->setLayout(m_hlayout);
 
     m_manage_area = new QWidget(this);
-    m_manage_area->setStyleSheet("QWidget{background-color:gray;}");
+    m_manage_area->setStyleSheet("QWidget{background-color:rgb(254,254,254);}");
     m_generate_pdf_button = new QPushButton(m_manage_area);
     m_generate_pdf_button->setText("生成pdf");
     m_send_button = new QPushButton(m_manage_area);
@@ -60,7 +60,7 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     current_dir = new QDir(directory);
 
     m_scrollarea = new QScrollArea(this);
-    m_scrollarea->setStyleSheet("QScrollArea{border-width:2px;border-color:black;border-style:solid;}");
+    m_scrollarea->setStyleSheet("background-color:gray;");
     m_scrollarea->setFrameStyle(QFrame::NoFrame);
     m_scrollarea->setAlignment(Qt::AlignCenter);
 
