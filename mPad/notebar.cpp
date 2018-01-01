@@ -6,15 +6,11 @@ NoteBar::NoteBar(QWidget *parent) :
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 200, 60, 60);
-
-    m_painttoolbar = new PaintToolBar;
-    set_window_top_hint(m_painttoolbar, HWND_TOPMOST, true);
-    m_painttoolbar->hide();
 }
 
 NoteBar::~NoteBar()
 {
-    delete m_painttoolbar;
+    delete g_paintbar;
 }
 
 void NoteBar::mousePressEvent(QMouseEvent *event)
@@ -29,8 +25,8 @@ void NoteBar::mouseMoveEvent(QMouseEvent *event)
     if(b_move)
     {
         this->move(this->pos() + event->pos() - m_last_point);
-        if(m_painttoolbar->isVisible())
-            m_painttoolbar->move(m_painttoolbar->pos() + event->pos() - m_last_point);
+        if(g_paintbar->isVisible())
+            g_paintbar->move(g_paintbar->pos() + event->pos() - m_last_point);
     }
 }
 
@@ -41,7 +37,7 @@ void NoteBar::mouseReleaseEvent(QMouseEvent *event)
     //如果未移动，则判定为点击
     if(m_absolute_point == event->globalPos())
     {
-        on_painttoolbar(m_painttoolbar->isVisible());
+        on_painttoolbar(g_paintbar->isVisible());
     }
 }
 
@@ -49,15 +45,15 @@ void NoteBar::on_painttoolbar(bool flag)
 {
     if(flag)
     {
-        m_painttoolbar->hide();
+        g_paintbar->hide();
         g_whiteboard->move(0, -g_whiteboard->height());
         set_window_top_hint(g_whiteboard, HWND_BOTTOM, false);
     }
     else
     {
-        m_painttoolbar->setGeometry(this->pos().x(), this->pos().y() - 410, 60, 410);
-        m_painttoolbar->on_brush_clicked();
-        m_painttoolbar->show();
+        g_paintbar->setGeometry(this->pos().x(), this->pos().y() - 410, 60, 410);
+        g_paintbar->on_brush_clicked();
+        g_paintbar->show();
         g_whiteboard->prepare(true);
         g_whiteboard->move(0,0);
         set_window_top_hint(g_whiteboard, HWND_TOP, true);

@@ -1,6 +1,7 @@
 #include "global.h"
 
 NoteBar *g_notebar = NULL;
+PaintToolBar *g_paintbar = NULL;
 DesktopSwitchBar *g_desktopswitchbar = NULL;
 SwitchBoard *g_switchboard = NULL;
 WhiteBoard *g_whiteboard = NULL;
@@ -20,6 +21,8 @@ int main(int argc, char *argv[])
 
     g_notebar = new NoteBar;
     g_notebar->show();
+    g_paintbar = new PaintToolBar;
+    g_paintbar->hide();
     g_desktopswitchbar = new DesktopSwitchBar;
     g_desktopswitchbar->show();
     g_switchboard = new SwitchBoard;
@@ -31,6 +34,7 @@ int main(int argc, char *argv[])
     g_screenshot = new ScreenShot;
 
     set_window_top_hint(g_notebar, HWND_TOPMOST, true);
+    set_window_top_hint(g_paintbar, HWND_TOPMOST, true);
     set_window_top_hint(g_desktopswitchbar, HWND_TOPMOST, true);
     set_window_top_hint(g_switchboard, HWND_TOPMOST, true);
 

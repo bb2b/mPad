@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     file_manage_window.cpp \
     file_manage_popup.cpp \
     file.cpp \
-    udiskdetect.cpp
+    udiskdetect.cpp \
+    explorerwindow.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -43,7 +44,8 @@ HEADERS  += mainwindow.h \
     file_manage_window.h \
     file_manage_popup.h \
     file.h \
-    udiskdetect.h
+    udiskdetect.h \
+    explorerwindow.h
 
 FORMS    +=
 

@@ -16,6 +16,13 @@ public:
 
 public:
     QIcon fileIcon(const QString filepath);
+    void openExcel(const QString filepath);
+    void openPpt(const QString filepath);
+    void openWord(const QString filepath);
+    void openPdf(const QString filepath);
+    void openPic(const QString filepath);
+    void openVideo(const QString filepath);
+    void closeOffice();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);

@@ -6,6 +6,7 @@
 WhiteBoard::WhiteBoard(QWidget *parent) : QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    this->setAttribute(Qt::WA_AcceptTouchEvents, true);
     //this->setAttribute(Qt::WA_TranslucentBackground, true);
     this->setGeometry(0, -GetSystemMetrics(SM_CYSCREEN), GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
     //QPalette pal(palette());
@@ -181,6 +182,7 @@ void WhiteBoard::paintEvent(QPaintEvent *event)
 
 void WhiteBoard::mousePressEvent(QMouseEvent *event)
 {
+    g_paintbar->raise();
     m_pressed = true;
     m_start_point = event->pos();
     m_move_start_point = event->pos();
@@ -232,4 +234,47 @@ void WhiteBoard::mouseReleaseEvent(QMouseEvent *event)
         points_temp.points = pointsTemp;
         pointsThis.push_back(points_temp);
     }
+}
+
+bool WhiteBoard::event(QEvent *event)
+{
+    /*switch(event->type()){
+        case QEvent::TouchBegin:
+        {
+            g_paintbar->raise();
+            m_pressed = true;
+            //m_start_point = event->pos();
+            //m_move_start_point = event->pos();
+            if(g_draw_type == ERASE || g_draw_type == SELECT)
+            {
+                m_image_temp_2 = m_image_temp;
+                m_current_image = &m_image_temp_2;
+            }
+            if(g_draw_type == ROAMING)
+            {
+                setCursor(Qt::SizeAllCursor);
+            }
+            else
+                pointsTemp.clear();
+            return true;
+        }
+        case QEvent::TouchUpdate:
+        {
+            QTouchEvent *te = static_cast<QTouchEvent *>(event);
+            QList<QTouchEvent::TouchPoint> touchPoints = te->touchPoints();
+            for(QTouchEvent::TouchPoint i : touchPoints){
+                m_start_point = i.startPos().toPoint();
+                m_move_start_point = i.lastPos().toPoint();
+                m_end_point = i.pos().toPoint();
+                paint();
+                update();
+            }
+            return true;
+        }
+        case QEvent::TouchEnd:
+            m_pressed = false;
+        default: ;
+    }*/
+
+    return QWidget::event(event);
 }

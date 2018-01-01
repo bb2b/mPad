@@ -1,7 +1,10 @@
 ﻿#include <QFileIconProvider>
 #include <QFileInfo>
+#include <QProcess>
+#include <QAxWidget>
 #include "file.h"
 #include "global.h"
+#include "explorerwindow.h"
 
 File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabel(parent),
     b_on_window_or_pupup(on_window_or_pupup),
@@ -39,7 +42,7 @@ File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabe
         m_tiny_file_description->setText(file_description);
         m_tiny_file_description->setFont(font);
         m_tiny_file_size = new QLabel(m_tiny_bg);
-        m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "KB");
+        m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "B");
         m_tiny_file_size->setFont(font);
     }
 }
@@ -65,6 +68,74 @@ QIcon File::fileIcon(const QString filepath)
     return provider.icon(QFileInfo(filepath));
 }
 
+void File::openExcel(const QString filepath)
+{
+    if(!ExplorerWindow::g_files.contains(filepath))
+    {
+        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        explorerwindow->show();
+        QAxWidget *officeContent_ = new QAxWidget("Excel.Application", explorerwindow);
+        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
+        officeContent_->setProperty("DisplayAlerts", false);
+        officeContent_->setGeometry(explorerwindow->geometry());
+        officeContent_->setControl(filepath);
+        officeContent_->show();
+    }
+}
+
+void File::openPpt(const QString filepath)
+{
+    if(!ExplorerWindow::g_files.contains(filepath))
+    {
+        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        explorerwindow->show();
+        QAxWidget *officeContent_ = new QAxWidget("PowerPoint.Application", explorerwindow);
+        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
+        officeContent_->setProperty("DisplayAlerts", false);
+        officeContent_->setGeometry(explorerwindow->geometry());
+        officeContent_->setControl(filepath);
+        officeContent_->show();
+    }
+}
+
+void File::openWord(const QString filepath)
+{
+    if(!ExplorerWindow::g_files.contains(filepath))
+    {
+        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        explorerwindow->show();
+        QAxWidget *officeContent_ = new QAxWidget("Word.Application", explorerwindow);
+        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
+        officeContent_->setProperty("DisplayAlerts", false);
+        officeContent_->setGeometry(explorerwindow->geometry());
+        officeContent_->setControl(filepath);
+        officeContent_->show();
+    }
+}
+
+void File::openPdf(const QString filepath)
+{
+
+}
+
+void File::openPic(const QString filepath)
+{
+
+}
+
+void File::openVideo(const QString filepath)
+{
+
+}
+
+void File::closeOffice()
+{
+
+}
+
 void File::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton &&\
@@ -73,7 +144,40 @@ void File::mouseReleaseEvent(QMouseEvent *event)
             event->pos().y() >= 0 &&\
             event->pos().y() <= this->height())
     {
-        emit clicked();
+        if(m_fileinfo.isFile())
+        {
+            if(m_fileinfo.suffix() == "docx" || m_fileinfo.suffix() == "doc")
+            {
+                openWord(m_fileinfo.absoluteFilePath());
+            }
+            else if(m_fileinfo.suffix() == "xlsx" || m_fileinfo.suffix() == "xls")
+            {
+                openExcel(m_fileinfo.absoluteFilePath());
+            }
+            else if(m_fileinfo.suffix() == "pptx" || m_fileinfo.suffix() == "ppt")
+            {
+                openPpt(m_fileinfo.absoluteFilePath());
+            }
+            else if(m_fileinfo.suffix() == "pdf")
+            {
+                openPdf(m_fileinfo.absoluteFilePath());
+            }
+            else if(m_fileinfo.suffix() == "bmp" || m_fileinfo.suffix() == "gif" || m_fileinfo.suffix() == "jpe" || m_fileinfo.suffix() == "jpeg" || m_fileinfo.suffix() == "jpg" || m_fileinfo.suffix() == "png")
+            {
+                openPic(m_fileinfo.absoluteFilePath());
+            }
+            else if(m_fileinfo.suffix() == "mp4" || m_fileinfo.suffix() == "avi" || m_fileinfo.suffix() == "mov" || m_fileinfo.suffix() == "wmv")
+            {
+                openVideo(m_fileinfo.absoluteFilePath());
+            }
+            else
+            {
+                QString tempStr = m_fileinfo.absoluteFilePath().replace("/", "\\");
+                QProcess::execute("explorer " + tempStr);
+            }
+        }
+        else
+            emit clicked();
     }
 }
 

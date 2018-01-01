@@ -51,6 +51,7 @@ static inline void WriteLog(const char* format, ...)
 #endif
 
 extern NoteBar *g_notebar;
+extern PaintToolBar *g_paintbar;
 extern DesktopSwitchBar *g_desktopswitchbar;
 extern SwitchBoard *g_switchboard;
 extern WhiteBoard *g_whiteboard;

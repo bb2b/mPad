@@ -187,7 +187,7 @@ void FileManageWindow::init_files_area()
             m_vlayout->addWidget(groupbox);
         }
         //列出“图片”
-        QFileInfoList pics_list = current_dir->entryInfoList(QStringList() << "*.bmp" << "*.dib" << "*.gif" << "*.jfif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png" << "*.tif" << "*.tiff" << "*.wdp");
+        QFileInfoList pics_list = current_dir->entryInfoList(QStringList() << "*.bmp" << "*.gif" << "*.jpe" << "*.jpeg" << "*.jpg" << "*.png");
         if(pics_list.size() > 0)
         {
             QGroupBox *groupbox = new QGroupBox();

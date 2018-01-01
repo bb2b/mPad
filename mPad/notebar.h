@@ -30,7 +30,6 @@ private:
     bool b_move;
     QPoint m_last_point;
     QPoint m_absolute_point;
-    PaintToolBar *m_painttoolbar;
 };
 
 class PaintToolBar : public QWidget
