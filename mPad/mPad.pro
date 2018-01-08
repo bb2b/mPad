@@ -11,6 +11,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = mPad
 TEMPLATE = app
 
+INCLUDEPATH += $$PWD/poppler
+
+win32: LIBS += -L$$PWD/poppler -llibpoppler
+win32: LIBS += -L$$PWD/poppler -llibpoppler-qt5
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -28,7 +32,8 @@ SOURCES += main.cpp\
     file_manage_popup.cpp \
     file.cpp \
     udiskdetect.cpp \
-    explorerwindow.cpp
+    explorerwindow.cpp \
+    pdfutils.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -45,7 +50,8 @@ HEADERS  += mainwindow.h \
     file_manage_popup.h \
     file.h \
     udiskdetect.h \
-    explorerwindow.h
+    explorerwindow.h \
+    pdfutils.h
 
 FORMS    +=
 

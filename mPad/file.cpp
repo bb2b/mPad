@@ -118,7 +118,12 @@ void File::openWord(const QString filepath)
 
 void File::openPdf(const QString filepath)
 {
-
+    if(!ExplorerWindow::g_files.contains(filepath))
+    {
+        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        explorerwindow->setGeometry(GetSystemMetrics(SM_CXSCREEN)/4,GetSystemMetrics(SM_CYSCREEN)/4,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        explorerwindow->show();
+    }
 }
 
 void File::openPic(const QString filepath)

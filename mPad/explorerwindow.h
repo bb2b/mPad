@@ -5,6 +5,9 @@
 #include <QMouseEvent>
 #include <QVector>
 #include <QFileInfo>
+#include <QLabel>
+#include <QPushButton>
+#include "pdfutils.h"
 
 class ExplorerWindow : public QWidget
 {
@@ -15,15 +18,32 @@ public:
 
 protected:
     void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
 public:
     static QVector<QString> g_files;
 
+public slots:
+    void on_max_btn_clicked();
+    void on_open_on_desktop_btn_clicked();
+    void on_previous_page_btn_clicked();
+    void on_next_page_btn_clicked();
+
 private:
     bool b_move;
+    int n_current_page;
     QPoint m_last_point;
+    QLabel *m_display;
+    PdfUtils *m_pdf;
+    QPushButton *m_max_btn;
+    QPushButton *m_open_on_desktop_btn;
+    QPushButton *m_previous_page_left_btn;
+    QPushButton *m_previous_page_right_btn;
+    QPushButton *m_next_page_left_btn;
+    QPushButton *m_next_page_right_btn;
 };
 
 #endif // EXPLORERWINDOW_H
