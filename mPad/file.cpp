@@ -2,6 +2,7 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QAxWidget>
+#include <QAxObject>
 #include "file.h"
 #include "global.h"
 #include "explorerwindow.h"
@@ -88,15 +89,24 @@ void File::openPpt(const QString filepath)
 {
     if(!ExplorerWindow::g_files.contains(filepath))
     {
-        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
-        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
-        explorerwindow->show();
-        QAxWidget *officeContent_ = new QAxWidget("PowerPoint.Application", explorerwindow);
-        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
-        officeContent_->setProperty("DisplayAlerts", false);
-        officeContent_->setGeometry(explorerwindow->geometry());
-        officeContent_->setControl(filepath);
-        officeContent_->show();
+        //ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        //explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        //explorerwindow->show();
+        QAxObject *officeContent_ = new QAxObject("Powerpoint.Application", /*explorerwindow*/0);
+
+        //officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
+        //officeContent_->setProperty("DisplayAlerts", false);
+        //officeContent_->setGeometry(explorerwindow->geometry());
+        //officeContent_->setControl(filepath);
+        QAxObject *presentationObj = officeContent_->querySubObject("Presentations");
+        QString temp_filepath = filepath;
+        presentationObj->querySubObject("Open(QString, int, int, int)", temp_filepath.replace("/", "\\"), 0, 0, 0);
+        presentationObj->dynamicCall("SaveAs(QString, int, int)", QString("C:\\Users\\Administrator\\Desktop\\111.pdf"), 31, 0);
+        //officeContent_->show();
+        /*QAxObject *ppt = new QAxObject();
+        ppt->setControl("PowerPoint.Application");
+        QAxObject *temp = ppt->querySubObject("Open(QString, QVariant)", filepath, 0);
+        temp->dynamicCall("SaveAs(const QString&,int,const QString&,const QString&,bool,bool)", QString("C:\\Users\\Administrator\\Desktop"),56,QString(""),QString(""),false,false);*/
     }
 }
 
@@ -121,7 +131,7 @@ void File::openPdf(const QString filepath)
     if(!ExplorerWindow::g_files.contains(filepath))
     {
         ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
-        explorerwindow->setGeometry(GetSystemMetrics(SM_CXSCREEN)/4,GetSystemMetrics(SM_CYSCREEN)/4,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
+        //explorerwindow->setGeometry(GetSystemMetrics(SM_CXSCREEN)/4,GetSystemMetrics(SM_CYSCREEN)/4,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         explorerwindow->show();
     }
 }

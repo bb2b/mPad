@@ -16,6 +16,7 @@ public:
     int getNumPages();
     //获取pdf页面大小
     QSize getPageSize();
+
 private:
     QString filePath;
     int numPages;

@@ -1,30 +1,37 @@
 #include "pdfutils.h"
 
-PdfUtils::PdfUtils(QString filePath) {
+PdfUtils::PdfUtils(QString filePath)
+{
     this->filePath = filePath;
     getPdfInfo();
 }
 
-PdfUtils::~PdfUtils() {
+PdfUtils::~PdfUtils()
+{
 }
 
-QImage PdfUtils::getPdfImage(int pageNumber, int width, int height) {
+QImage PdfUtils::getPdfImage(int pageNumber, int width, int height)
+{
     QImage image;
     Poppler::Document* document = Poppler::Document::load(filePath);
-    if (!document || document->isLocked()) {
+    document->setRenderHint(Poppler::Document::TextAntialiasing);
+    if (!document || document->isLocked())
+    {
         // ... error message ....
         delete document;
         return image;
     }
     // Document starts at page 0
     Poppler::Page* pdfPage = document->page(pageNumber);
-    if (pdfPage == 0) {
+    if (pdfPage == 0)
+    {
         // ... error message ...
         return image;
     }
     // Generate a QImage of the rendered page
-    image = pdfPage->renderToImage(72, 72, -1, -1, width, height);
-    if (image.isNull()) {
+    image = pdfPage->renderToImage(width*72/pdfPage->pageSize().width(),height*72/pdfPage->pageSize().height());
+    if (image.isNull())
+    {
         // ... error message ...
         return image;
     }
@@ -34,18 +41,23 @@ QImage PdfUtils::getPdfImage(int pageNumber, int width, int height) {
     return image;
 }
 
-int PdfUtils::getNumPages() {
+int PdfUtils::getNumPages()
+{
     return numPages;
 }
 
-QSize PdfUtils::getPageSize() {
+// first page size
+QSize PdfUtils::getPageSize()
+{
     return pageSize;
 }
 
-void PdfUtils::getPdfInfo() {
+void PdfUtils::getPdfInfo()
+{
     numPages = 0;
     Poppler::Document* document = Poppler::Document::load(filePath);
-    if (!document || document->isLocked()) {
+    if (!document || document->isLocked())
+    {
         // ... error message ....
         delete document;
         return;
