@@ -100,8 +100,8 @@ void File::openPpt(const QString filepath)
         //officeContent_->setControl(filepath);
         QAxObject *presentationObj = officeContent_->querySubObject("Presentations");
         QString temp_filepath = filepath;
-        presentationObj->querySubObject("Open(QString, int, int, int)", temp_filepath.replace("/", "\\"), 0, 0, 0);
-        presentationObj->dynamicCall("SaveAs(QString, int, int)", QString("C:\\Users\\Administrator\\Desktop\\111.pdf"), 31, 0);
+        QAxObject *presentation = presentationObj->querySubObject("Open(QString, int, int, int)", temp_filepath.replace("/", "\\"), 0, 0, 0);
+        presentation->dynamicCall("SaveAs(QString,int,int)", QString("C:\\Users\\Administrator\\Desktop\\11"),32,0);
         //officeContent_->show();
         /*QAxObject *ppt = new QAxObject();
         ppt->setControl("PowerPoint.Application");
