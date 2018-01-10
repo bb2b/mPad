@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_usbpanel(NULL)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
-    this->setStyleSheet("background-color: rgb(255, 170, 127);");
+    this->setObjectName("mainwindow");
+    this->setStyleSheet("#mainwindow{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 255, 255, 255));}");
 
     m_settingpanel_ctrl_btn = new QPushButton(this);
     m_settingpanel_ctrl_btn->setText("隐藏");

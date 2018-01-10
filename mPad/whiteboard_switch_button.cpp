@@ -7,6 +7,7 @@ SwitchBoard::SwitchBoard(QWidget *parent) :
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry((GetSystemMetrics(SM_CXSCREEN) - 75) / 2, 0, 75, 23);
+    this->setStyleSheet("background-color:rgb(134,134,134);");
 
     vLayout = new QVBoxLayout(this);
     vLayout->setContentsMargins(0,0,0,0);

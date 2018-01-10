@@ -3,6 +3,7 @@
 #include <QProcess>
 #include <QAxWidget>
 #include <QAxObject>
+#include <QFontMetrics>
 #include "file.h"
 #include "global.h"
 #include "explorerwindow.h"
@@ -21,13 +22,15 @@ File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabe
     {
         m_large_file_name = new QLabel(this);
         m_large_file_name->setAlignment(Qt::AlignCenter);
-        m_large_file_name->setText(m_fileinfo.fileName());
+        m_large_file_name->setFont(QFont("Microsoft YaHei", 9, QFont::Normal));
+        //m_large_file_name->setText(m_fileinfo.fileName());
     }
     else
     {
         m_tiny_bg = new QLabel(this);
         m_tiny_file_name = new QLabel(m_tiny_bg);
-        m_tiny_file_name->setText(m_fileinfo.fileName());
+        m_tiny_file_name->setFont(QFont("Microsoft YaHei", 9, QFont::Normal));
+        //m_tiny_file_name->setText(m_fileinfo.fileName());
         QString file_description = "";
         SHFILEINFOA info;
         if(SHGetFileInfoA(fileinfo.absoluteFilePath().toStdString().c_str(),
@@ -39,13 +42,16 @@ File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabe
             std::string type = info.szTypeName;
             file_description = QString::fromLocal8Bit(type.c_str());
         }
-        QFont font("宋体", 7, QFont::Normal);
         m_tiny_file_description = new QLabel(m_tiny_bg);
         m_tiny_file_description->setText(file_description);
-        m_tiny_file_description->setFont(font);
+        m_tiny_file_description->setFont(QFont("Microsoft YaHei", 7, QFont::Normal));
+        QPalette temp_palette;
+        temp_palette.setColor(QPalette::WindowText, Qt::gray);
+        m_tiny_file_description->setPalette(temp_palette);
         m_tiny_file_size = new QLabel(m_tiny_bg);
-        m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "B");
-        m_tiny_file_size->setFont(font);
+        m_tiny_file_size->setText(QString::number(m_fileinfo.size() / 1024 ) + "KB");
+        m_tiny_file_size->setFont(QFont("Microsoft YaHei", 7, QFont::Normal));
+        m_tiny_file_size->setPalette(temp_palette);
     }
 
     tempPDF_dir = qApp->applicationDirPath().replace("/", "\\") + "\\TempPDF\\";
@@ -161,6 +167,17 @@ void File::openVideo()
 
 }
 
+QString File::geteElidedText(QFont font, QString str, int maxWidth)
+{
+    QFontMetrics fontWidth(font);
+    int width = fontWidth.width(str);  //计算字符串宽度
+    if(width >= maxWidth)  //当字符串宽度大于最大宽度时进行转换
+    {
+        str = fontWidth.elidedText(str, Qt::ElideRight, maxWidth);  //右部显示省略号
+    }
+    return str;   //返回处理后的字符串
+}
+
 void File::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton &&\
@@ -213,9 +230,10 @@ void File::resizeEvent(QResizeEvent *event)
     if(b_on_window_or_pupup)
     {
         //this->setStyleSheet("QLabel{border-left-width: 40px; border-right-width: 40px; border-top-width: 5px; border-bottom-width: 40px; border-style: solid; border-color: transparent;}");
-        m_icon->setGeometry(0, 0, w, h - 40);
-        m_icon->setPixmap(fileIcon().pixmap(w, h));
-        m_large_file_name->setGeometry(0, h - 40, w, 40);
+        m_icon->setGeometry(20, 0, w - 40, h - 40);
+        m_icon->setPixmap(fileIcon().pixmap(m_icon->width(), m_icon->height()));
+        m_large_file_name->setGeometry(10, h - 40, w - 20, 40);
+        m_large_file_name->setText(geteElidedText(m_large_file_name->font(), m_fileinfo.fileName(), m_large_file_name->width()));
     }
     else
     {
@@ -225,6 +243,7 @@ void File::resizeEvent(QResizeEvent *event)
         m_icon->setPixmap(fileIcon().pixmap(m_icon->width(), m_icon->height()));
         m_tiny_bg->setGeometry(w / 6, 0, w - w / 6, h);
         m_tiny_file_name->setGeometry(0, 0, m_tiny_bg->width(), m_tiny_bg->height() / 2);
+        m_tiny_file_name->setText(geteElidedText(m_tiny_file_name->font(), m_fileinfo.fileName(), m_tiny_file_name->width()));
         m_tiny_file_description->setGeometry(0, m_tiny_bg->height() / 2, m_tiny_bg->width(), m_tiny_bg->height() / 4);
         m_tiny_file_size->setGeometry(0, m_tiny_bg->height() * 3 / 4, m_tiny_bg->width(), m_tiny_bg->height() / 4);
     }

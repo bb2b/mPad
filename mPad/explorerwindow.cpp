@@ -3,10 +3,11 @@
 
 QVector<QString> ExplorerWindow::g_files(0);
 
-ExplorerWindow::ExplorerWindow(QString realpath, QString filepath, QWidget *parent) : QWidget(parent),
+ExplorerWindow::ExplorerWindow(QString realpath, QString filepath, QWidget *parent) : QDialog(parent),
     n_current_page(0),
     m_realpath(realpath)
 {
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     ExplorerWindow::g_files.push_back(m_realpath);

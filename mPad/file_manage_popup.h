@@ -1,7 +1,7 @@
 #ifndef FILEMANAGEPOPUP_H
 #define FILEMANAGEPOPUP_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QResizeEvent>
 #include <QPushButton>
 #include <QScrollArea>
@@ -11,7 +11,7 @@
 #include <QList>
 #include "file.h"
 
-class FileManagePopup : public QWidget
+class FileManagePopup : public QDialog
 {
     Q_OBJECT
 public:
@@ -48,6 +48,7 @@ private:
     QWidget *m_files_area;
     QVBoxLayout *m_vlayout;
     QHBoxLayout *m_hlayout;
+    QVBoxLayout *m_vspacer;
 };
 
 #endif // FILEMANAGEPOPUP_H

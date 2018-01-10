@@ -6,6 +6,7 @@ NoteBar::NoteBar(QWidget *parent) :
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, GetSystemMetrics(SM_CYSCREEN) - 200, 60, 60);
+    this->setStyleSheet("background-color:rgb(134,134,134);");
 }
 
 NoteBar::~NoteBar()
@@ -64,6 +65,7 @@ PaintToolBar::PaintToolBar(QWidget *parent) :
     QWidget(parent)
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+    this->setStyleSheet("background-color:rgb(134,134,134);");
 
     v_layout = new QVBoxLayout;
     v_layout->setSpacing(0);

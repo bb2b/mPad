@@ -1,7 +1,7 @@
 #ifndef EXPLORERWINDOW_H
 #define EXPLORERWINDOW_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QMouseEvent>
 #include <QVector>
 #include <QFileInfo>
@@ -9,7 +9,7 @@
 #include <QPushButton>
 #include "pdfutils.h"
 
-class ExplorerWindow : public QWidget
+class ExplorerWindow : public QDialog
 {
     Q_OBJECT
 

@@ -3,9 +3,10 @@
 
 QVector<QString> PictureWindow::g_pictures(0);
 
-PictureWindow::PictureWindow(QString picpath, QWidget *parent) : QWidget(parent),
+PictureWindow::PictureWindow(QString picpath, QWidget *parent) : QDialog(parent),
     m_picpath(picpath)
 {
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     PictureWindow::g_pictures.push_back(m_picpath);
@@ -16,6 +17,12 @@ PictureWindow::PictureWindow(QString picpath, QWidget *parent) : QWidget(parent)
     connect(m_close_btn, SIGNAL(clicked()), this, SLOT(on_close_btn_clicked()));
 
     m_pixmap = new QPixmap(m_picpath);
+
+    if(m_pixmap == NULL || m_pixmap->isNull())
+    {
+        this->close();
+        return;
+    }
 
     int h = GetSystemMetrics(SM_CYSCREEN) / 2;
     int w = m_pixmap->width() * h / m_pixmap->height();

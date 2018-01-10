@@ -3,6 +3,7 @@
 #include <QStringList>
 #include <QGridLayout>
 #include <QObjectList>
+#include <QScrollBar>
 #include "global.h"
 
 FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *parent) : QDialog(parent),
@@ -19,7 +20,7 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     m_title_area = new QWidget(this);
     m_title_area->setStyleSheet("QWidget{background-color:rgb(53,162,213);}");
     m_hlayout = new QHBoxLayout();
-    m_hlayout->setContentsMargins(0,0,0,0);
+    m_hlayout->setContentsMargins(10,0,0,0);
     m_hlayout->setSpacing(0);
     m_directory_label = new QLabel();
     m_directory_label->setText(original_directory);
@@ -39,7 +40,7 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     m_title_area->setLayout(m_hlayout);
 
     m_manage_area = new QWidget(this);
-    m_manage_area->setStyleSheet("QWidget{background-color:rgb(254,254,254);}");
+    m_manage_area->setStyleSheet("QWidget{background-color:rgb(202,202,202);}");
     m_generate_pdf_button = new QPushButton(m_manage_area);
     m_generate_pdf_button->setText("生成pdf");
     m_send_button = new QPushButton(m_manage_area);
@@ -60,9 +61,26 @@ FileManageWindow::FileManageWindow(int filtertype, QString directory, QWidget *p
     current_dir = new QDir(directory);
 
     m_scrollarea = new QScrollArea(this);
-    m_scrollarea->setStyleSheet("background-color:gray;");
+    m_scrollarea->setStyleSheet("background-color:rgb(254,254,254);");
     m_scrollarea->setFrameStyle(QFrame::NoFrame);
     m_scrollarea->setAlignment(Qt::AlignCenter);
+
+    QScrollBar *scrollbar_h = m_scrollarea->horizontalScrollBar();
+    scrollbar_h->setStyleSheet("QScrollBar:horizontal{height: 8px; padding-left: 8px; padding-right: 8px; background: rgb(231,231,231)}"
+                               "QScrollBar::handle:horizontal{height: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::handle:horizontal:hover{height: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::sub-line:horizontal{height: 8px; width: 8px; subcontrol-position: left; border-image: url(:/pic/left.png)}"
+                               "QScrollBar::add-line:horizontal{height: 8px; width: 8px; subcontrol-position: right; border-image: url(:/pic/right.png)}"
+                               "QScrollBar::add-page:horizontal{background: rgb(231,231,231)}"
+                               "QScrollBar::sub-page:horizontal{background: rgb(231,231,231)}");
+    QScrollBar *scrollbar_v = m_scrollarea->verticalScrollBar();
+    scrollbar_v->setStyleSheet("QScrollBar:vertical{width: 8px; padding-top: 8px; padding-bottom: 8px; background: rgb(231,231,231)}"
+                               "QScrollBar::handle:vertical{width: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::handle:vertical:hover{width: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::add-line:vertical{height: 8px; width: 8px; subcontrol-position: bottom; border-image: url(:/pic/top.png)}"
+                               "QScrollBar::sub-line:vertical{height: 8px; width: 8px; subcontrol-position: top; border-image: url(:/pic/bottom.png)}"
+                               "QScrollBar::add-page:vertical{background: rgb(231,231,231)}"
+                               "QScrollBar::sub-page:vertical{background: rgb(231,231,231)}");
 
     init_files_area();
 }
@@ -141,6 +159,12 @@ void FileManageWindow::init_files_area()
                 else
                     v++;
             }
+            if(dirs_list.size() < 8)
+            {
+                QHBoxLayout *temp_hlayout = new QHBoxLayout();
+                temp_hlayout->addStretch();
+                gridlayout->addLayout(temp_hlayout, 0, dirs_list.size());
+            }
             groupbox->setLayout(gridlayout);
             m_vlayout->addWidget(groupbox);
         }
@@ -182,6 +206,12 @@ void FileManageWindow::init_files_area()
                 }
                 else
                     v++;
+            }
+            if(files_list.size() < 8)
+            {
+                QHBoxLayout *temp_hlayout = new QHBoxLayout();
+                temp_hlayout->addStretch();
+                gridlayout->addLayout(temp_hlayout, 0, files_list.size());
             }
             groupbox->setLayout(gridlayout);
             m_vlayout->addWidget(groupbox);
@@ -225,6 +255,12 @@ void FileManageWindow::init_files_area()
                 else
                     v++;
             }
+            if(pics_list.size() < 8)
+            {
+                QHBoxLayout *temp_hlayout = new QHBoxLayout();
+                temp_hlayout->addStretch();
+                gridlayout->addLayout(temp_hlayout, 0, pics_list.size());
+            }
             groupbox->setLayout(gridlayout);
             m_vlayout->addWidget(groupbox);
         }
@@ -266,6 +302,12 @@ void FileManageWindow::init_files_area()
                 }
                 else
                     v++;
+            }
+            if(movies_list.size() < 8)
+            {
+                QHBoxLayout *temp_hlayout = new QHBoxLayout();
+                temp_hlayout->addStretch();
+                gridlayout->addLayout(temp_hlayout, 0, movies_list.size());
             }
             groupbox->setLayout(gridlayout);
             m_vlayout->addWidget(groupbox);
@@ -341,12 +383,21 @@ void FileManageWindow::init_files_area()
                         else
                             v++;
                     }
+                    if(all_list.size() < 8)
+                    {
+                        QHBoxLayout *temp_hlayout = new QHBoxLayout();
+                        temp_hlayout->addStretch();
+                        gridlayout->addLayout(temp_hlayout, 0, all_list.size());
+                    }
                     groupbox->setLayout(gridlayout);
                     m_vlayout->addWidget(groupbox);
                 }
             }
         }
     }
+    m_vspacer = new QVBoxLayout();
+    m_vspacer->addStretch();
+    m_vlayout->addLayout(m_vspacer);
     if(m_files_area != NULL)
     {
         delete m_files_area;
@@ -443,5 +494,8 @@ void FileManageWindow::resizeEvent(QResizeEvent *event)
         groupbox->setFixedSize(w - 10, ((filelist.size() - 1) / 8 + ((filelist.size() - 1) % 8 > 0 ? 1 : 0)) * (w - 10) / 8 + 15);
         h_count += groupbox->height();
     }
-    m_files_area->setGeometry(0, 0, w - 10, h_count);
+    if(h_count < m_scrollarea->height())
+        m_files_area->setGeometry(0, 0, w - 10, m_scrollarea->height());
+    else
+        m_files_area->setGeometry(0, 0, w - 10, h_count);
 }

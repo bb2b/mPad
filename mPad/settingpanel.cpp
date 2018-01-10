@@ -3,7 +3,7 @@
 
 SettingPanel::SettingPanel(QWidget *parent) : QWidget(parent)
 {
-    this->setStyleSheet("background-color:gray;");
+    this->setStyleSheet("background-color:rgb(134,134,134);");
 
     m_setting = new QPushButton(this);
     m_setting->setText("设置");

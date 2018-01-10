@@ -22,6 +22,7 @@ public:
     void openPdf(QString filepath);
     void openPic();
     void openVideo();
+    QString geteElidedText(QFont font, QString str, int maxWidth);
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);

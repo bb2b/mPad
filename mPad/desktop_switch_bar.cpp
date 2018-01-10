@@ -6,6 +6,7 @@ DesktopSwitchBar::DesktopSwitchBar(QWidget *parent) :
 {
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
     this->setGeometry(GetSystemMetrics(SM_CXSCREEN) - 120, 120, 60, 60);
+    this->setStyleSheet("background-color:rgb(134,134,134);");
 }
 
 DesktopSwitchBar::~DesktopSwitchBar()

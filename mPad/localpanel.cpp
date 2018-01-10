@@ -13,7 +13,7 @@ LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent),
     filemanagepopup_html(NULL),
     filemanagepopup_other(NULL)
 {
-    this->setStyleSheet("background-color:rgb(188,188,188);");
+    this->setStyleSheet("background-color:rgb(250,250,250);");
 
     m_all_files = new myLabel(this);
     m_all_files->setText("会议收藏");
@@ -48,7 +48,7 @@ LocalPanel::LocalPanel(QWidget *parent) : QWidget(parent),
     m_empty_area = new myLabel(this);
 
     m_layout = new QHBoxLayout(this);
-    m_layout->setContentsMargins(0,0,0,0);
+    m_layout->setContentsMargins(5,5,5,5);
     m_layout->setSpacing(0);
     m_layout->addWidget(m_all_files);
     m_layout->addWidget(m_note_files);

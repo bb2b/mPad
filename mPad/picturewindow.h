@@ -1,13 +1,13 @@
 #ifndef PICTUREWINDOW_H
 #define PICTUREWINDOW_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QLabel>
 #include <QPushButton>
 #include <QVector>
 #include <QPixmap>
 
-class PictureWindow : public QWidget
+class PictureWindow : public QDialog
 {
     Q_OBJECT
 

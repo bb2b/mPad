@@ -1,13 +1,16 @@
 ﻿#include <QGroupBox>
+#include <QScrollBar>
 #include "file_manage_popup.h"
 #include "global.h"
 
-FileManagePopup::FileManagePopup(int filtertype, QString directory, bool onBottom, bool newHtml, QWidget *parent) : QWidget(parent),
+FileManagePopup::FileManagePopup(int filtertype, QString directory, bool onBottom, bool newHtml, QWidget *parent) : QDialog(parent),
     current_directory(directory),
     m_onBottom(onBottom),
     m_newHtml(newHtml),
     g_filtertype(filtertype)
 {
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+
     m_title_area = new QWidget(this);
     m_title_area->setStyleSheet("QWidget{background-color:rgb(254,254,254);}");
     m_hlayout = new QHBoxLayout();
@@ -37,9 +40,33 @@ FileManagePopup::FileManagePopup(int filtertype, QString directory, bool onBotto
     m_scrollarea->setFrameStyle(QFrame::NoFrame);
     m_scrollarea->setAlignment(Qt::AlignCenter);
 
+    QScrollBar *scrollbar_h = m_scrollarea->horizontalScrollBar();
+    scrollbar_h->setStyleSheet("QScrollBar:horizontal{height: 8px; padding-left: 8px; padding-right: 8px; background: rgb(231,231,231)}"
+                               "QScrollBar::handle:horizontal{height: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::handle:horizontal:hover{height: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::sub-line:horizontal{height: 8px; width: 8px; subcontrol-position: left; border-image: url(:/pic/left.png)}"
+                               "QScrollBar::add-line:horizontal{height: 8px; width: 8px; subcontrol-position: right; border-image: url(:/pic/right.png)}"
+                               "QScrollBar::add-page:horizontal{background: rgb(231,231,231)}"
+                               "QScrollBar::sub-page:horizontal{background: rgb(231,231,231)}");
+    QScrollBar *scrollbar_v = m_scrollarea->verticalScrollBar();
+    scrollbar_v->setStyleSheet("QScrollBar:vertical{width: 8px; padding-top: 8px; padding-bottom: 8px; background: rgb(231,231,231)}"
+                               "QScrollBar::handle:vertical{width: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::handle:vertical:hover{width: 8px; border-radius: 3px; background: rgb(53,162,213)}"
+                               "QScrollBar::add-line:vertical{height: 8px; width: 8px; subcontrol-position: bottom; border-image: url(:/pic/top.png)}"
+                               "QScrollBar::sub-line:vertical{height: 8px; width: 8px; subcontrol-position: top; border-image: url(:/pic/bottom.png)}"
+                               "QScrollBar::add-page:vertical{background: rgb(231,231,231)}"
+                               "QScrollBar::sub-page:vertical{background: rgb(231,231,231)}");
+
+
+    m_vspacer = new QVBoxLayout();
+    m_vspacer->addStretch();
+
     m_vlayout = new QVBoxLayout();
     m_vlayout->setContentsMargins(0,0,0,0);
     m_vlayout->setSpacing(0);
+    if(!m_onBottom)
+        m_vlayout->addLayout(m_vspacer);
+
     if(current_dir.exists())
     {
         QStringList filter;
@@ -123,6 +150,9 @@ FileManagePopup::FileManagePopup(int filtertype, QString directory, bool onBotto
             }
         }
     }
+
+    if(m_onBottom)
+        m_vlayout->addLayout(m_vspacer);
     m_files_area = new QWidget();
     m_files_area->setLayout(m_vlayout);
     m_scrollarea->setWidget(m_files_area);
@@ -236,5 +266,8 @@ void FileManagePopup::resizeEvent(QResizeEvent *event)
         groupbox->setFixedSize(w, (filelist.size() - 1) * (w - 10) / 3 + 15);
         h_count += groupbox->height();
     }
-    m_files_area->setGeometry(0, 0, w - 10, h_count);
+    if(h_count < m_scrollarea->height())
+        m_files_area->setGeometry(0, 0, w - 10, m_scrollarea->height());
+    else
+        m_files_area->setGeometry(0, 0, w - 10, h_count);
 }

@@ -58,6 +58,7 @@ private:
     QWidget *m_files_area;
     QVBoxLayout *m_vlayout;
     QHBoxLayout *m_hlayout;
+    QVBoxLayout *m_vspacer;
     QDir *current_dir;
     bool b_move;
     QPoint m_last_point;
