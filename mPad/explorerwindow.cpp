@@ -3,10 +3,13 @@
 
 QVector<QString> ExplorerWindow::g_files(0);
 
-ExplorerWindow::ExplorerWindow(QString filepath, QWidget *parent) : QWidget(parent),
-    n_current_page(0)
+ExplorerWindow::ExplorerWindow(QString realpath, QString filepath, QWidget *parent) : QWidget(parent),
+    n_current_page(0),
+    m_realpath(realpath)
 {
-    ExplorerWindow::g_files.push_back(filepath);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+
+    ExplorerWindow::g_files.push_back(realpath);
     m_display = new QLabel(this);
     m_max_btn = new QPushButton(m_display);
     m_open_on_desktop_btn = new QPushButton(m_display);
@@ -16,12 +19,14 @@ ExplorerWindow::ExplorerWindow(QString filepath, QWidget *parent) : QWidget(pare
     m_previous_page_right_btn->setEnabled(false);
     m_next_page_left_btn = new QPushButton(m_display);
     m_next_page_right_btn = new QPushButton(m_display);
+    m_close_btn = new QPushButton(m_display);
     m_max_btn->setText("全屏");
     m_open_on_desktop_btn->setText("在外部打开");
     m_previous_page_left_btn->setText("上一页");
     m_previous_page_right_btn->setText("上一页");
     m_next_page_left_btn->setText("下一页");
     m_next_page_right_btn->setText("下一页");
+    m_close_btn->setText("关闭");
 
     m_pdf = new PdfUtils(filepath);
     if(m_pdf->getNumPages() > 0)
@@ -41,6 +46,7 @@ ExplorerWindow::ExplorerWindow(QString filepath, QWidget *parent) : QWidget(pare
     connect(m_previous_page_right_btn, SIGNAL(clicked()), this, SLOT(on_previous_page_btn_clicked()));
     connect(m_next_page_left_btn, SIGNAL(clicked()), this, SLOT(on_next_page_btn_clicked()));
     connect(m_next_page_right_btn, SIGNAL(clicked()), this, SLOT(on_next_page_btn_clicked()));
+    connect(m_close_btn, SIGNAL(clicked()), this, SLOT(on_close_btn_clicked()));
 
     int h = GetSystemMetrics(SM_CYSCREEN) / 2;
     int w = m_pdf->getPageSize().width() * h / m_pdf->getPageSize().height();
@@ -55,6 +61,7 @@ ExplorerWindow::~ExplorerWindow()
     delete m_previous_page_right_btn;
     delete m_next_page_left_btn;
     delete m_next_page_right_btn;
+    delete m_close_btn;
     delete m_display;
     delete m_pdf;
 }
@@ -102,6 +109,7 @@ void ExplorerWindow::resizeEvent(QResizeEvent *event)
     m_previous_page_right_btn->setGeometry(w-45,h/3,40,20);
     m_next_page_left_btn->setGeometry(0,h*2/3,40,20);
     m_next_page_right_btn->setGeometry(w-45,h*2/3,40,20);
+    m_close_btn->setGeometry(w-45,h-20,40,20);
     m_display->setGeometry(0,0,w,h);
     m_display->setPixmap(QPixmap::fromImage(m_pdf->getPdfImage(n_current_page,m_display->width(),m_display->height())));
 }
@@ -146,4 +154,10 @@ void ExplorerWindow::on_next_page_btn_clicked()
         m_next_page_left_btn->setEnabled(false);
         m_next_page_right_btn->setEnabled(false);
     }
+}
+
+void ExplorerWindow::on_close_btn_clicked()
+{
+    ExplorerWindow::g_files.removeOne(m_realpath);
+    this->close();
 }

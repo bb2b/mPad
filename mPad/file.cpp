@@ -141,7 +141,7 @@ void File::openPdf(QString filepath)
 {
     if(!ExplorerWindow::g_files.contains(filepath))
     {
-        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        ExplorerWindow *explorerwindow = new ExplorerWindow(m_fileinfo.absoluteFilePath(), filepath, g_mainwindow);
         //explorerwindow->setGeometry(GetSystemMetrics(SM_CXSCREEN)/4,GetSystemMetrics(SM_CYSCREEN)/4,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         explorerwindow->show();
     }

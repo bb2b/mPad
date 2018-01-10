@@ -13,7 +13,7 @@ class ExplorerWindow : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ExplorerWindow(QString filepath, QWidget *parent = 0);
+    explicit ExplorerWindow(QString realpath, QString filepath, QWidget *parent = 0);
     ~ExplorerWindow();
 
 protected:
@@ -31,6 +31,7 @@ public slots:
     void on_open_on_desktop_btn_clicked();
     void on_previous_page_btn_clicked();
     void on_next_page_btn_clicked();
+    void on_close_btn_clicked();
 
 private:
     bool b_move;
@@ -44,6 +45,8 @@ private:
     QPushButton *m_previous_page_right_btn;
     QPushButton *m_next_page_left_btn;
     QPushButton *m_next_page_right_btn;
+    QPushButton *m_close_btn;
+    QString m_realpath;
 };
 
 #endif // EXPLORERWINDOW_H
