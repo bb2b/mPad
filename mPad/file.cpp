@@ -73,7 +73,7 @@ void File::openExcel(const QString filepath)
 {
     if(!ExplorerWindow::g_files.contains(filepath))
     {
-        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        /*ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
         explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         explorerwindow->show();
         QAxWidget *officeContent_ = new QAxWidget("Excel.Application", explorerwindow);
@@ -81,7 +81,13 @@ void File::openExcel(const QString filepath)
         officeContent_->setProperty("DisplayAlerts", false);
         officeContent_->setGeometry(explorerwindow->geometry());
         officeContent_->setControl(filepath);
-        officeContent_->show();
+        officeContent_->show();*/
+
+        QAxObject *excelContent = new QAxObject("Excel.Application", 0);
+        QAxObject *workbookObj = excelContent->querySubObject("Workbooks");
+        QString temp_filepath = filepath;
+        QAxObject *workbook = workbookObj->querySubObject("Open(QString)", temp_filepath.replace("/", "\\"));
+        workbook->dynamicCall("ExportAsFixedFormat(int,QString)",0, QString("C:\\Users\\Administrator\\Desktop\\22"));
     }
 }
 
@@ -92,21 +98,17 @@ void File::openPpt(const QString filepath)
         //ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
         //explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         //explorerwindow->show();
-        QAxObject *officeContent_ = new QAxObject("Powerpoint.Application", /*explorerwindow*/0);
-
         //officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
         //officeContent_->setProperty("DisplayAlerts", false);
         //officeContent_->setGeometry(explorerwindow->geometry());
         //officeContent_->setControl(filepath);
-        QAxObject *presentationObj = officeContent_->querySubObject("Presentations");
-        QString temp_filepath = filepath;
-        QAxObject *presentation = presentationObj->querySubObject("Open(QString, int, int, int)", temp_filepath.replace("/", "\\"), 0, 0, 0);
-        presentation->dynamicCall("SaveAs(QString,int,int)", QString("C:\\Users\\Administrator\\Desktop\\11"),32,0);
         //officeContent_->show();
-        /*QAxObject *ppt = new QAxObject();
-        ppt->setControl("PowerPoint.Application");
-        QAxObject *temp = ppt->querySubObject("Open(QString, QVariant)", filepath, 0);
-        temp->dynamicCall("SaveAs(const QString&,int,const QString&,const QString&,bool,bool)", QString("C:\\Users\\Administrator\\Desktop"),56,QString(""),QString(""),false,false);*/
+
+        QAxObject *pptContent = new QAxObject("Powerpoint.Application", /*explorerwindow*/0);
+        QAxObject *presentationObj = pptContent->querySubObject("Presentations");
+        QString temp_filepath = filepath;
+        QAxObject *presentation = presentationObj->querySubObject("Open(QString,int,int,int)", temp_filepath.replace("/", "\\"),0,0,0);
+        presentation->dynamicCall("SaveAs(QString,int,int)", QString("C:\\Users\\Administrator\\Desktop\\11"),32,0);
     }
 }
 
@@ -114,7 +116,7 @@ void File::openWord(const QString filepath)
 {
     if(!ExplorerWindow::g_files.contains(filepath))
     {
-        ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
+        /*ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
         explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         explorerwindow->show();
         QAxWidget *officeContent_ = new QAxWidget("Word.Application", explorerwindow);
@@ -122,7 +124,13 @@ void File::openWord(const QString filepath)
         officeContent_->setProperty("DisplayAlerts", false);
         officeContent_->setGeometry(explorerwindow->geometry());
         officeContent_->setControl(filepath);
-        officeContent_->show();
+        officeContent_->show();*/
+
+        QAxObject *excelContent = new QAxObject("Word.Application", 0);
+        QAxObject *documentObj = excelContent->querySubObject("Documents");
+        QString temp_filepath = filepath;
+        QAxObject *document = documentObj->querySubObject("Open(QString)", temp_filepath.replace("/", "\\"));
+        document->dynamicCall("ExportAsFixedFormat(QString,int)", QString("C:\\Users\\Administrator\\Desktop\\33"),17);
     }
 }
 
