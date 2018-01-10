@@ -12,6 +12,7 @@
 class ExplorerWindow : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit ExplorerWindow(QString realpath, QString filepath, QWidget *parent = 0);
     ~ExplorerWindow();

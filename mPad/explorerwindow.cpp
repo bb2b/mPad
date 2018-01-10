@@ -9,7 +9,7 @@ ExplorerWindow::ExplorerWindow(QString realpath, QString filepath, QWidget *pare
 {
     this->setAttribute(Qt::WA_DeleteOnClose);
 
-    ExplorerWindow::g_files.push_back(realpath);
+    ExplorerWindow::g_files.push_back(m_realpath);
     m_display = new QLabel(this);
     m_max_btn = new QPushButton(m_display);
     m_open_on_desktop_btn = new QPushButton(m_display);

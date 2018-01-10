@@ -6,6 +6,7 @@
 #include "file.h"
 #include "global.h"
 #include "explorerwindow.h"
+#include "picturewindow.h"
 
 File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabel(parent),
     b_on_window_or_pupup(on_window_or_pupup),
@@ -142,14 +143,17 @@ void File::openPdf(QString filepath)
     if(!ExplorerWindow::g_files.contains(filepath))
     {
         ExplorerWindow *explorerwindow = new ExplorerWindow(m_fileinfo.absoluteFilePath(), filepath, g_mainwindow);
-        //explorerwindow->setGeometry(GetSystemMetrics(SM_CXSCREEN)/4,GetSystemMetrics(SM_CYSCREEN)/4,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
         explorerwindow->show();
     }
 }
 
 void File::openPic()
 {
-
+    if(!PictureWindow::g_pictures.contains(m_fileinfo.absoluteFilePath()))
+    {
+        PictureWindow *picturewindow = new PictureWindow(m_fileinfo.absoluteFilePath(), g_mainwindow);
+        picturewindow->show();
+    }
 }
 
 void File::openVideo()
