@@ -46,6 +46,8 @@ File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabe
         m_tiny_file_size->setText(QString::number(m_fileinfo.size()) + "B");
         m_tiny_file_size->setFont(font);
     }
+
+    tempPDF_dir = qApp->applicationDirPath().replace("/", "\\") + "\\TempPDF\\";
 }
 
 File::~File()
@@ -63,78 +65,79 @@ File::~File()
     }
 }
 
-QIcon File::fileIcon(const QString filepath)
+QIcon File::fileIcon()
 {
     QFileIconProvider provider;
-    return provider.icon(QFileInfo(filepath));
+    return provider.icon(m_fileinfo);
 }
 
-void File::openExcel(const QString filepath)
+void File::openExcel()
 {
-    if(!ExplorerWindow::g_files.contains(filepath))
+    if(!ExplorerWindow::g_files.contains(m_fileinfo.absoluteFilePath()))
     {
-        /*ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
-        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
-        explorerwindow->show();
-        QAxWidget *officeContent_ = new QAxWidget("Excel.Application", explorerwindow);
-        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
-        officeContent_->setProperty("DisplayAlerts", false);
-        officeContent_->setGeometry(explorerwindow->geometry());
-        officeContent_->setControl(filepath);
-        officeContent_->show();*/
-
         QAxObject *excelContent = new QAxObject("Excel.Application", 0);
         QAxObject *workbookObj = excelContent->querySubObject("Workbooks");
-        QString temp_filepath = filepath;
-        QAxObject *workbook = workbookObj->querySubObject("Open(QString)", temp_filepath.replace("/", "\\"));
-        workbook->dynamicCall("ExportAsFixedFormat(int,QString)",0, QString("C:\\Users\\Administrator\\Desktop\\22"));
+        QAxObject *workbook = workbookObj->querySubObject("Open(QString)", m_fileinfo.absoluteFilePath().replace("/", "\\"));
+        QDir temp_dir(tempPDF_dir);
+        if(!temp_dir.exists())
+            temp_dir.mkpath(tempPDF_dir);
+        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";;
+        workbook->dynamicCall("ExportAsFixedFormat(int,QString)",0, pdf_store_file_path);
+        workbook->dynamicCall("Close()");
+        workbookObj->dynamicCall("Close()");
+        excelContent->dynamicCall("Quit()");
+        delete workbook;
+        delete workbookObj;
+        delete excelContent;
+        openPdf(pdf_store_file_path);
     }
 }
 
-void File::openPpt(const QString filepath)
+void File::openPpt()
 {
-    if(!ExplorerWindow::g_files.contains(filepath))
+    if(!ExplorerWindow::g_files.contains(m_fileinfo.absoluteFilePath()))
     {
-        //ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
-        //explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
-        //explorerwindow->show();
-        //officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
-        //officeContent_->setProperty("DisplayAlerts", false);
-        //officeContent_->setGeometry(explorerwindow->geometry());
-        //officeContent_->setControl(filepath);
-        //officeContent_->show();
-
         QAxObject *pptContent = new QAxObject("Powerpoint.Application", /*explorerwindow*/0);
         QAxObject *presentationObj = pptContent->querySubObject("Presentations");
-        QString temp_filepath = filepath;
-        QAxObject *presentation = presentationObj->querySubObject("Open(QString,int,int,int)", temp_filepath.replace("/", "\\"),0,0,0);
-        presentation->dynamicCall("SaveAs(QString,int,int)", QString("C:\\Users\\Administrator\\Desktop\\11"),32,0);
+        QAxObject *presentation = presentationObj->querySubObject("Open(QString,int,int,int)", m_fileinfo.absoluteFilePath().replace("/", "\\"),0,0,0);
+        QDir temp_dir(tempPDF_dir);
+        if(!temp_dir.exists())
+            temp_dir.mkpath(tempPDF_dir);
+        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";;
+        presentation->dynamicCall("SaveAs(QString,int,int)", pdf_store_file_path,32,0);
+        presentation->dynamicCall("Close()");
+        //presentationObj->dynamicCall("Close()");
+        pptContent->dynamicCall("Quit()");
+        delete presentation;
+        delete presentationObj;
+        delete pptContent;
+        openPdf(pdf_store_file_path);
     }
 }
 
-void File::openWord(const QString filepath)
+void File::openWord()
 {
-    if(!ExplorerWindow::g_files.contains(filepath))
+    if(!ExplorerWindow::g_files.contains(m_fileinfo.absoluteFilePath()))
     {
-        /*ExplorerWindow *explorerwindow = new ExplorerWindow(filepath, g_mainwindow);
-        explorerwindow->setGeometry(0,0,GetSystemMetrics(SM_CXSCREEN)/2, GetSystemMetrics(SM_CYSCREEN)/2);
-        explorerwindow->show();
-        QAxWidget *officeContent_ = new QAxWidget("Word.Application", explorerwindow);
-        officeContent_->dynamicCall("SetVisible (bool Visible)", "false");
-        officeContent_->setProperty("DisplayAlerts", false);
-        officeContent_->setGeometry(explorerwindow->geometry());
-        officeContent_->setControl(filepath);
-        officeContent_->show();*/
-
         QAxObject *excelContent = new QAxObject("Word.Application", 0);
         QAxObject *documentObj = excelContent->querySubObject("Documents");
-        QString temp_filepath = filepath;
-        QAxObject *document = documentObj->querySubObject("Open(QString)", temp_filepath.replace("/", "\\"));
-        document->dynamicCall("ExportAsFixedFormat(QString,int)", QString("C:\\Users\\Administrator\\Desktop\\33"),17);
+        QAxObject *document = documentObj->querySubObject("Open(QString)", m_fileinfo.absoluteFilePath().replace("/", "\\"));
+        QDir temp_dir(tempPDF_dir);
+        if(!temp_dir.exists())
+            temp_dir.mkpath(tempPDF_dir);
+        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";
+        document->dynamicCall("ExportAsFixedFormat(QString,int)", pdf_store_file_path,17);
+        //document->dynamicCall("Close()");
+        //documentObj->dynamicCall("Close()");
+        excelContent->dynamicCall("Quit()");
+        delete document;
+        delete documentObj;
+        delete excelContent;
+        openPdf(pdf_store_file_path);
     }
 }
 
-void File::openPdf(const QString filepath)
+void File::openPdf(QString filepath)
 {
     if(!ExplorerWindow::g_files.contains(filepath))
     {
@@ -144,17 +147,12 @@ void File::openPdf(const QString filepath)
     }
 }
 
-void File::openPic(const QString filepath)
+void File::openPic()
 {
 
 }
 
-void File::openVideo(const QString filepath)
-{
-
-}
-
-void File::closeOffice()
+void File::openVideo()
 {
 
 }
@@ -171,15 +169,15 @@ void File::mouseReleaseEvent(QMouseEvent *event)
         {
             if(m_fileinfo.suffix() == "docx" || m_fileinfo.suffix() == "doc")
             {
-                openWord(m_fileinfo.absoluteFilePath());
+                openWord();
             }
             else if(m_fileinfo.suffix() == "xlsx" || m_fileinfo.suffix() == "xls")
             {
-                openExcel(m_fileinfo.absoluteFilePath());
+                openExcel();
             }
             else if(m_fileinfo.suffix() == "pptx" || m_fileinfo.suffix() == "ppt")
             {
-                openPpt(m_fileinfo.absoluteFilePath());
+                openPpt();
             }
             else if(m_fileinfo.suffix() == "pdf")
             {
@@ -187,11 +185,11 @@ void File::mouseReleaseEvent(QMouseEvent *event)
             }
             else if(m_fileinfo.suffix() == "bmp" || m_fileinfo.suffix() == "gif" || m_fileinfo.suffix() == "jpe" || m_fileinfo.suffix() == "jpeg" || m_fileinfo.suffix() == "jpg" || m_fileinfo.suffix() == "png")
             {
-                openPic(m_fileinfo.absoluteFilePath());
+                openPic();
             }
             else if(m_fileinfo.suffix() == "mp4" || m_fileinfo.suffix() == "avi" || m_fileinfo.suffix() == "mov" || m_fileinfo.suffix() == "wmv")
             {
-                openVideo(m_fileinfo.absoluteFilePath());
+                openVideo();
             }
             else
             {
@@ -212,7 +210,7 @@ void File::resizeEvent(QResizeEvent *event)
     {
         //this->setStyleSheet("QLabel{border-left-width: 40px; border-right-width: 40px; border-top-width: 5px; border-bottom-width: 40px; border-style: solid; border-color: transparent;}");
         m_icon->setGeometry(0, 0, w, h - 40);
-        m_icon->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
+        m_icon->setPixmap(fileIcon().pixmap(w, h));
         m_large_file_name->setGeometry(0, h - 40, w, 40);
     }
     else
@@ -220,7 +218,7 @@ void File::resizeEvent(QResizeEvent *event)
         //this->setStyleSheet("QLabel{border-left-width: 5px; border-right-width: 50px; border-top-width: 5px; border-bottom-width: 5px; border-style: solid; border-color: transparent;}");
         //this->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(w, h));
         m_icon->setGeometry(0, h / 2 - w / 12, w / 6, w / 6);
-        m_icon->setPixmap(fileIcon(m_fileinfo.absoluteFilePath()).pixmap(m_icon->width(), m_icon->height()));
+        m_icon->setPixmap(fileIcon().pixmap(m_icon->width(), m_icon->height()));
         m_tiny_bg->setGeometry(w / 6, 0, w - w / 6, h);
         m_tiny_file_name->setGeometry(0, 0, m_tiny_bg->width(), m_tiny_bg->height() / 2);
         m_tiny_file_description->setGeometry(0, m_tiny_bg->height() / 2, m_tiny_bg->width(), m_tiny_bg->height() / 4);

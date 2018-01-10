@@ -15,14 +15,13 @@ public:
     ~File();
 
 public:
-    QIcon fileIcon(const QString filepath);
-    void openExcel(const QString filepath);
-    void openPpt(const QString filepath);
-    void openWord(const QString filepath);
-    void openPdf(const QString filepath);
-    void openPic(const QString filepath);
-    void openVideo(const QString filepath);
-    void closeOffice();
+    QIcon fileIcon();
+    void openExcel();
+    void openPpt();
+    void openWord();
+    void openPdf(QString filepath);
+    void openPic();
+    void openVideo();
 
 protected:
     void mouseReleaseEvent(QMouseEvent *event);
@@ -42,6 +41,7 @@ private:
     QLabel *m_tiny_file_name;
     QLabel *m_tiny_file_description;
     QLabel *m_tiny_file_size;
+    QString tempPDF_dir;
 };
 
 #endif // FILE_H
