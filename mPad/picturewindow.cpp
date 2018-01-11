@@ -73,7 +73,7 @@ void PictureWindow::resizeEvent(QResizeEvent *event)
 {
     int w = event->size().width();
     int h = event->size().height();
-    m_close_btn->setGeometry(w-45,h-20,40,20);
+    m_close_btn->setGeometry(w-55,h-20,50,20);
     m_display->setGeometry(0,0,w,h);
     m_display->setPixmap(m_pixmap->scaled(w, h));
 }

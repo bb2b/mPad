@@ -104,25 +104,28 @@ void ExplorerWindow::resizeEvent(QResizeEvent *event)
 {
     int w = event->size().width();
     int h = event->size().height();
-    m_open_on_desktop_btn->setGeometry(w-65,0,60,20);
-    m_max_btn->setGeometry(w-m_open_on_desktop_btn->width()-5-40,0,40,20);
-    m_previous_page_left_btn->setGeometry(0,h/3,40,20);
-    m_previous_page_right_btn->setGeometry(w-45,h/3,40,20);
-    m_next_page_left_btn->setGeometry(0,h*2/3,40,20);
-    m_next_page_right_btn->setGeometry(w-45,h*2/3,40,20);
-    m_close_btn->setGeometry(w-45,h-20,40,20);
+    m_open_on_desktop_btn->setGeometry(w-75,0,70,20);
+    m_max_btn->setGeometry(w-m_open_on_desktop_btn->width()-5-50,0,50,20);
+    m_previous_page_left_btn->setGeometry(0,h/3,50,20);
+    m_previous_page_right_btn->setGeometry(w-55,h/3,50,20);
+    m_next_page_left_btn->setGeometry(0,h*2/3,50,20);
+    m_next_page_right_btn->setGeometry(w-55,h*2/3,50,20);
+    m_close_btn->setGeometry(w-55,h-20,50,20);
     m_display->setGeometry(0,0,w,h);
     m_display->setPixmap(QPixmap::fromImage(m_pdf->getPdfImage(n_current_page,m_display->width(),m_display->height())));
 }
 
 void ExplorerWindow::on_max_btn_clicked()
 {
-
+    int h = GetSystemMetrics(SM_CYSCREEN);
+    int w = m_pdf->getPageSize().width() * h / m_pdf->getPageSize().height();
+    this->setGeometry((GetSystemMetrics(SM_CXSCREEN) - w)/2, (GetSystemMetrics(SM_CYSCREEN) - h)/2, w, h);
 }
 
 void ExplorerWindow::on_open_on_desktop_btn_clicked()
 {
-
+    QString tempStr = m_realpath.replace("/", "\\");
+    QProcess::execute("explorer " + tempStr);
 }
 
 void ExplorerWindow::on_previous_page_btn_clicked()

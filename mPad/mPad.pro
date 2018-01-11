@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     udiskdetect.cpp \
     explorerwindow.cpp \
     pdfutils.cpp \
-    picturewindow.cpp
+    picturewindow.cpp \
+    moviewindow.cpp
 
 HEADERS  += mainwindow.h \
     whiteboard.h \
@@ -53,7 +54,8 @@ HEADERS  += mainwindow.h \
     udiskdetect.h \
     explorerwindow.h \
     pdfutils.h \
-    picturewindow.h
+    picturewindow.h \
+    moviewindow.h
 
 FORMS    +=
 

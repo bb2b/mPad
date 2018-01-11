@@ -7,6 +7,7 @@
 #include <QFileInfo>
 #include <QLabel>
 #include <QPushButton>
+#include <QProcess>
 #include "pdfutils.h"
 
 class ExplorerWindow : public QDialog

@@ -8,6 +8,7 @@
 #include "global.h"
 #include "explorerwindow.h"
 #include "picturewindow.h"
+#include "moviewindow.h"
 
 File::File(bool on_window_or_pupup, QFileInfo fileinfo, QWidget *parent) : QLabel(parent),
     b_on_window_or_pupup(on_window_or_pupup),
@@ -88,8 +89,8 @@ void File::openExcel()
         QDir temp_dir(tempPDF_dir);
         if(!temp_dir.exists())
             temp_dir.mkpath(tempPDF_dir);
-        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";;
-        workbook->dynamicCall("ExportAsFixedFormat(int,QString)",0, pdf_store_file_path);
+        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";
+        workbook->dynamicCall("ExportAsFixedFormat(int,QString)", 0, pdf_store_file_path);
         workbook->dynamicCall("Close()");
         workbookObj->dynamicCall("Close()");
         excelContent->dynamicCall("Quit()");
@@ -110,8 +111,8 @@ void File::openPpt()
         QDir temp_dir(tempPDF_dir);
         if(!temp_dir.exists())
             temp_dir.mkpath(tempPDF_dir);
-        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";;
-        presentation->dynamicCall("SaveAs(QString,int,int)", pdf_store_file_path,32,0);
+        QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";
+        presentation->dynamicCall("SaveAs(QString,int)", pdf_store_file_path, 32);
         presentation->dynamicCall("Close()");
         //presentationObj->dynamicCall("Close()");
         pptContent->dynamicCall("Quit()");
@@ -133,7 +134,7 @@ void File::openWord()
         if(!temp_dir.exists())
             temp_dir.mkpath(tempPDF_dir);
         QString pdf_store_file_path = tempPDF_dir + m_fileinfo.fileName() + "." + m_fileinfo.lastModified().toString("yyyyMMddhhmmsszzz") + ".pdf";
-        document->dynamicCall("ExportAsFixedFormat(QString,int)", pdf_store_file_path,17);
+        document->dynamicCall("ExportAsFixedFormat(QString,int)", pdf_store_file_path, 17);
         //document->dynamicCall("Close()");
         //documentObj->dynamicCall("Close()");
         excelContent->dynamicCall("Quit()");
@@ -164,7 +165,11 @@ void File::openPic()
 
 void File::openVideo()
 {
-
+    if(!MovieWindow::g_movies.contains(m_fileinfo.absoluteFilePath()))
+    {
+        MovieWindow *moviewindow = new MovieWindow(m_fileinfo.absoluteFilePath(), g_mainwindow);
+        moviewindow->show();
+    }
 }
 
 QString File::geteElidedText(QFont font, QString str, int maxWidth)
@@ -208,7 +213,7 @@ void File::mouseReleaseEvent(QMouseEvent *event)
             {
                 openPic();
             }
-            else if(m_fileinfo.suffix() == "mp4" || m_fileinfo.suffix() == "avi" || m_fileinfo.suffix() == "mov" || m_fileinfo.suffix() == "wmv")
+            else if(m_fileinfo.suffix() == "mp4" || m_fileinfo.suffix() == "avi" || m_fileinfo.suffix() == "mov" || m_fileinfo.suffix() == "wmv" || m_fileinfo.suffix() == "rmvb")
             {
                 openVideo();
             }

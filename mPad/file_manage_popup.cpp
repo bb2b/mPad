@@ -89,7 +89,7 @@ FileManagePopup::FileManagePopup(int filtertype, QString directory, bool onBotto
             list_fileinfo_list = sort_by_createdtime(get_file_list(current_directory, filter));
             break;
         case MOVIE:
-            filter << "*.mp4" << "*.avi" << "*.mov" << "*.wmv";
+            filter << "*.mp4" << "*.avi" << "*.mov" << "*.wmv" << "*.rmvb";
             list_fileinfo_list = sort_by_createdtime(get_file_list(current_directory, filter));
             break;
         case OTHER:
